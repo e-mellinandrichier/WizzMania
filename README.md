@@ -69,7 +69,8 @@ It will have both a server and a client application, as well as a user-friendly 
 ## technologies & libraries
 
 - c++ standard library for core functionalities
-- Qt for creating the graphical user interface
+- [Qt](https://www.qt.io/qt-learning-hub) for creating the graphical user interface
+- [Crow framework](https://crowcpp.org/master/) for creating HTTP or Websocket services
 - testing frameworks (Google Test, Catch2, DocTest, Qt Test?)
 
 ## things to consider 
@@ -149,7 +150,8 @@ Elle comportera à la fois une application serveur et une application client, ai
 ## technologies et bibliothèques
 
 - bibliothèque standard C++ pour les fonctionnalités principales
-- Qt pour créer l'interface utilisateur graphique
+- [Qt](https://www.qt.io/qt-learning-hub) pour créer l'interface utilisateur graphique
+- [Crow framework](https://crowcpp.org/master/) pour créer des services de HTTP ou de Websocket
 - frameworks de test (Google Test, Catch2, DocTest, Qt Test ?)
 
 ## points à considérer
