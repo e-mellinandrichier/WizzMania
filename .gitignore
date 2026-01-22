@@ -33,9 +33,13 @@
 *.lib
 
 # Executables
+/server
 *.exe
 *.out
 *.app
 
 # debug information files
 *.dwo
+
+# IDE config
+.vscode/
