@@ -2,7 +2,7 @@ NAME=WIZZmania
 
 # compiler & flags
 CXX=g++
-CXXFLAGS=-Wall -g -std=c++17
+CXXFLAGS=-Wall -g -std=c++17 -pthread
 
 # executables
 WM_SERVER=server
@@ -20,4 +20,4 @@ server:
 # clean up
 .PHONY: clean
 clean:
-	rm -f $(SERVER)
+	rm -f $(WM_SERVER)
