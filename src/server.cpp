@@ -1,55 +1,15 @@
 // server.cpp
 
-#include <cstring> // memset() & string operations
-#include <iostream> // console output
-#include <netinet/in.h> // internet address family
-#include <sys/socket.h> // core socket functionality
-#include <thread> // for multi-threading
-#include <unistd.h> // POSIX OS - close(), read()
-#include <vector> // to store client connections
-
 # include "../include/server.h"
 
 // container to track active client connections
 std::vector<int> clients;
 
 // broadcast message to all clients except the sender
-void broadcast_msg(const std::string& msg, int sender) {
-    for (int client : clients)
-        if (client != sender)
-            send(client, msg.c_str(), msg.size(), 0);
-}
+void broadcast_msg(const std::string& msg, int sender);
 
 // handle individual client connection
-void handle_client(int client_fd) 
-{
-    char buffer[1024]; // buffer to store received messages
-    
-    // main communication loop for this client
-    while(true) 
-    {
-        // read data from the client
-        int msg_length = read(client_fd, buffer, sizeof(buffer) -1);
-        
-        // check for connection closure (0) or read error (-1)
-        if(msg_length <= 0) 
-        {
-            break;
-        }
-        
-        // null-terminate the buffer to create valid string
-        buffer[msg_length] = '\0';
-
-        // create a message with client ID & their message
-        std::string msg = "CLIENT " + std::to_string(client_fd) + ": " + buffer;
-
-        // broadcast message to other clients
-        broadcast_msg(msg, client_fd);
-    }
-
-    // close the client socket
-    close(client_fd);
-}
+void handle_client(int client_fd);
 
 int main () 
 {
@@ -90,4 +50,42 @@ int main ()
         std::thread(handle_client, client_fd).detach(); // detach allows thread to run independently
     }
     return 0;
+}
+
+// broadcast message to all clients except the sender
+void broadcast_msg(const std::string& msg, int sender) {
+    for (int client : clients)
+        if (client != sender)
+            send(client, msg.c_str(), msg.size(), 0);
+}
+
+// handle individual client connection
+void handle_client(int client_fd) 
+{
+    char buffer[1024]; // buffer to store received messages
+    
+    // main communication loop for this client
+    while(true) 
+    {
+        // read data from the client
+        int msg_length = read(client_fd, buffer, sizeof(buffer) -1);
+        
+        // check for connection closure (0) or read error (-1)
+        if(msg_length <= 0) 
+        {
+            break;
+        }
+        
+        // null-terminate the buffer to create valid string
+        buffer[msg_length] = '\0';
+
+        // create a message with client ID & their message
+        std::string msg = "CLIENT " + std::to_string(client_fd) + ": " + buffer;
+
+        // broadcast message to other clients
+        broadcast_msg(msg, client_fd);
+    }
+
+    // close the client socket
+    close(client_fd);
 }
