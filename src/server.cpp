@@ -13,7 +13,12 @@
 // container to track active client connections
 std::vector<int> clients;
 
-void broadcast_msg(const std::string& msg, int sender) {}
+// broadcast message to all clients except the sender
+void broadcast_msg(const std::string& msg, int sender) {
+    for (int client : clients)
+        if (client != sender)
+            send(client, msg.c_str(), msg.size(), 0);
+}
 
 // handle individual client connection
 void handle_client(int client_fd) 
@@ -38,6 +43,7 @@ void handle_client(int client_fd)
         // create a message with client ID & their message
         std::string msg = "CLIENT " + std::to_string(client_fd) + ": " + buffer;
 
+        // broadcast message to other clients
         broadcast_msg(msg, client_fd);
     }
 
