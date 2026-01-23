@@ -1,0 +1,3 @@
+/Users/melli/Code/WizzMania/server/build/CMakeFiles/wizzmania_server.dir
+/Users/melli/Code/WizzMania/server/build/CMakeFiles/edit_cache.dir
+/Users/melli/Code/WizzMania/server/build/CMakeFiles/rebuild_cache.dir
