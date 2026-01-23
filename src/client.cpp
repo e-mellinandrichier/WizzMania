@@ -7,6 +7,20 @@ void receive_messages(int server_socket);
 
 int main()
 {
+    // create a socket file descriptor
+    // AF_INET for IPv4, SOCK_STREAM for TCP protocol
+    int server_fd = socket(AF_INET, SOCK_STREAM, 0);
+
+    // define server address structure
+    sockaddr_in address
+    {
+        AF_INET, // address family (IPv4)
+        htons(PORT), // host-to-network short - convert port to network byte order
+    };
+
+    // convert IP address 
+    inet_pton(AF_INET, SERVER_ADDRESS, &address.sin_addr);
+
     return 0;
 }
 
