@@ -1,0 +1,3 @@
+# Hashes of file build rules.
+69fa41041993618985415b3c5cf3c7cd CMakeFiles/wizzmania_client_autogen
+9479131830bd252e78742c258d4f55c4 wizzmania_client_autogen/timestamp

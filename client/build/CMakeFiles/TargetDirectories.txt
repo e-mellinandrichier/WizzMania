@@ -1,0 +1,5 @@
+/Users/melli/Code/WizzMania/client/build/CMakeFiles/wizzmania_client.dir
+/Users/melli/Code/WizzMania/client/build/CMakeFiles/edit_cache.dir
+/Users/melli/Code/WizzMania/client/build/CMakeFiles/rebuild_cache.dir
+/Users/melli/Code/WizzMania/client/build/CMakeFiles/wizzmania_client_autogen_timestamp_deps.dir
+/Users/melli/Code/WizzMania/client/build/CMakeFiles/wizzmania_client_autogen.dir

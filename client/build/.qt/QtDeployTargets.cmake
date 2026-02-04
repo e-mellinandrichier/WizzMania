@@ -1,0 +1,2 @@
+set(__QT_DEPLOY_TARGET_wizzmania_client_FILE /Users/melli/Code/WizzMania/client/build/wizzmania_client)
+set(__QT_DEPLOY_TARGET_wizzmania_client_TYPE EXECUTABLE)
