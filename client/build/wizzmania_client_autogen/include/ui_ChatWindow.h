@@ -44,6 +44,9 @@ public:
     QListWidget *userList;
     QWidget *chatAreaWidget;
     QVBoxLayout *chatAreaLayout;
+    QWidget *chatHeaderWidget;
+    QHBoxLayout *chatHeaderLayout;
+    QLabel *avatarLabel;
     QLabel *chatWithLabel;
     QTextEdit *chatDisplay;
     QHBoxLayout *inputLayout;
@@ -140,10 +143,28 @@ public:
         chatAreaLayout->setSpacing(10);
         chatAreaLayout->setObjectName("chatAreaLayout");
         chatAreaLayout->setContentsMargins(5, 5, 5, 5);
-        chatWithLabel = new QLabel(chatAreaWidget);
+        chatHeaderWidget = new QWidget(chatAreaWidget);
+        chatHeaderWidget->setObjectName("chatHeaderWidget");
+        chatHeaderLayout = new QHBoxLayout(chatHeaderWidget);
+        chatHeaderLayout->setSpacing(6);
+        chatHeaderLayout->setObjectName("chatHeaderLayout");
+        chatHeaderLayout->setContentsMargins(5, 3, 5, 3);
+        avatarLabel = new QLabel(chatHeaderWidget);
+        avatarLabel->setObjectName("avatarLabel");
+        avatarLabel->setMinimumSize(QSize(32, 32));
+        avatarLabel->setMaximumSize(QSize(32, 32));
+        avatarLabel->setAlignment(Qt::AlignCenter);
+        avatarLabel->setScaledContents(true);
+
+        chatHeaderLayout->addWidget(avatarLabel);
+
+        chatWithLabel = new QLabel(chatHeaderWidget);
         chatWithLabel->setObjectName("chatWithLabel");
 
-        chatAreaLayout->addWidget(chatWithLabel);
+        chatHeaderLayout->addWidget(chatWithLabel);
+
+
+        chatAreaLayout->addWidget(chatHeaderWidget);
 
         chatDisplay = new QTextEdit(chatAreaWidget);
         chatDisplay->setObjectName("chatDisplay");

@@ -47,6 +47,12 @@ public:
     QLineEdit *usernameInput;
     QLabel *passwordLabel;
     QLineEdit *passwordInput;
+    QLabel *displayNameLabel;
+    QLineEdit *displayNameInput;
+    QLabel *statusLabelField;
+    QLineEdit *statusInput;
+    QLabel *avatarLabel;
+    QLineEdit *avatarInput;
     QWidget *rememberMeWidget;
     QHBoxLayout *rememberMeLayout;
     QCheckBox *rememberMeCheckBox;
@@ -180,6 +186,42 @@ public:
 
         formLayout->addWidget(passwordInput);
 
+        displayNameLabel = new QLabel(formWidget);
+        displayNameLabel->setObjectName("displayNameLabel");
+
+        formLayout->addWidget(displayNameLabel);
+
+        displayNameInput = new QLineEdit(formWidget);
+        displayNameInput->setObjectName("displayNameInput");
+        displayNameInput->setMinimumSize(QSize(0, 22));
+        displayNameInput->setMaximumSize(QSize(16777215, 22));
+
+        formLayout->addWidget(displayNameInput);
+
+        statusLabelField = new QLabel(formWidget);
+        statusLabelField->setObjectName("statusLabelField");
+
+        formLayout->addWidget(statusLabelField);
+
+        statusInput = new QLineEdit(formWidget);
+        statusInput->setObjectName("statusInput");
+        statusInput->setMinimumSize(QSize(0, 22));
+        statusInput->setMaximumSize(QSize(16777215, 22));
+
+        formLayout->addWidget(statusInput);
+
+        avatarLabel = new QLabel(formWidget);
+        avatarLabel->setObjectName("avatarLabel");
+
+        formLayout->addWidget(avatarLabel);
+
+        avatarInput = new QLineEdit(formWidget);
+        avatarInput->setObjectName("avatarInput");
+        avatarInput->setMinimumSize(QSize(0, 22));
+        avatarInput->setMaximumSize(QSize(16777215, 22));
+
+        formLayout->addWidget(avatarInput);
+
         rememberMeWidget = new QWidget(formWidget);
         rememberMeWidget->setObjectName("rememberMeWidget");
         rememberMeLayout = new QHBoxLayout(rememberMeWidget);
@@ -277,6 +319,18 @@ public:
         passwordLabel->setText(QCoreApplication::translate("LoginWindow", "Password:", nullptr));
         passwordLabel->setStyleSheet(QCoreApplication::translate("LoginWindow", "font-size: 11px; font-weight: bold; color: #000000;", nullptr));
         passwordInput->setStyleSheet(QCoreApplication::translate("LoginWindow", "font-size: 11px; font-family: Tahoma, Arial, sans-serif; border: 1px solid #7F9DB9; padding: 2px 3px;", nullptr));
+        displayNameLabel->setText(QCoreApplication::translate("LoginWindow", "Display name:", nullptr));
+        displayNameLabel->setStyleSheet(QCoreApplication::translate("LoginWindow", "font-size: 11px; font-weight: bold; color: #000000;", nullptr));
+        displayNameInput->setPlaceholderText(QCoreApplication::translate("LoginWindow", "How your friends see you (optional)", nullptr));
+        displayNameInput->setStyleSheet(QCoreApplication::translate("LoginWindow", "font-size: 11px; font-family: Tahoma, Arial, sans-serif; border: 1px solid #7F9DB9; padding: 2px 3px;", nullptr));
+        statusLabelField->setText(QCoreApplication::translate("LoginWindow", "Status message:", nullptr));
+        statusLabelField->setStyleSheet(QCoreApplication::translate("LoginWindow", "font-size: 11px; font-weight: bold; color: #000000;", nullptr));
+        statusInput->setPlaceholderText(QCoreApplication::translate("LoginWindow", "What's on your mind? (optional)", nullptr));
+        statusInput->setStyleSheet(QCoreApplication::translate("LoginWindow", "font-size: 11px; font-family: Tahoma, Arial, sans-serif; border: 1px solid #7F9DB9; padding: 2px 3px;", nullptr));
+        avatarLabel->setText(QCoreApplication::translate("LoginWindow", "Avatar filename:", nullptr));
+        avatarLabel->setStyleSheet(QCoreApplication::translate("LoginWindow", "font-size: 11px; font-weight: bold; color: #000000;", nullptr));
+        avatarInput->setPlaceholderText(QCoreApplication::translate("LoginWindow", "e.g. default.png (optional)", nullptr));
+        avatarInput->setStyleSheet(QCoreApplication::translate("LoginWindow", "font-size: 11px; font-family: Tahoma, Arial, sans-serif; border: 1px solid #7F9DB9; padding: 2px 3px;", nullptr));
         rememberMeCheckBox->setText(QCoreApplication::translate("LoginWindow", "Remember my password", nullptr));
         rememberMeCheckBox->setStyleSheet(QCoreApplication::translate("LoginWindow", "font-size: 11px; color: #000000;", nullptr));
         loginButton->setText(QCoreApplication::translate("LoginWindow", "Sign In", nullptr));

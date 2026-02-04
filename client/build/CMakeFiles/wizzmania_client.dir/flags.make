@@ -6,5 +6,7 @@ CXX_DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_WEB
 
 CXX_INCLUDES = -I/Users/melli/Code/WizzMania/client/build/wizzmania_client_autogen/include -I/Users/melli/Code/WizzMania/client/build -I/Users/melli/Code/WizzMania/client/build/wizzmania_client_autogen -isystem /opt/homebrew/opt/qt/lib/QtCore.framework/Headers -iframework /opt/homebrew/opt/qt/lib -isystem /opt/homebrew/opt/qt/share/qt/mkspecs/macx-clang -isystem /opt/homebrew/opt/qt/include -isystem /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers -isystem /opt/homebrew/opt/qt/lib/QtGui.framework/Headers -isystem /opt/homebrew/opt/qt/lib/QtWebSockets.framework/Headers -isystem /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers
 
-CXX_FLAGS = -std=gnu++17
+CXX_FLAGSarm64 = -std=gnu++17 -arch arm64
+
+CXX_FLAGS = -std=gnu++17 -arch arm64
 

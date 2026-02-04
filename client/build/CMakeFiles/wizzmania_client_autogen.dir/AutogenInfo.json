@@ -502,7 +502,7 @@
 	"MOC_RELAXED_MODE" : false,
 	"MOC_SKIP" : [],
 	"MULTI_CONFIG" : false,
-	"PARALLEL" : 1,
+	"PARALLEL" : 10,
 	"PARSE_CACHE_FILE" : "/Users/melli/Code/WizzMania/client/build/CMakeFiles/wizzmania_client_autogen.dir/ParseCache.txt",
 	"QT_MOC_EXECUTABLE" : "/opt/homebrew/opt/qt/share/qt/libexec/moc",
 	"QT_UIC_EXECUTABLE" : "/opt/homebrew/opt/qt/share/qt/libexec/uic",

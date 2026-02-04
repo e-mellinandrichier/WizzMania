@@ -1,0 +1,15 @@
+meta {
+  name: List users
+  type: http
+  seq: 6
+}
+
+get {
+  url: http://localhost:18080/auth/users
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

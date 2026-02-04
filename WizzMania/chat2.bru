@@ -1,0 +1,18 @@
+meta {
+  name: chat2
+  type: ws
+  seq: 3
+}
+
+ws {
+  url: ws://localhost:18080/chat
+  body: ws
+  auth: inherit
+}
+
+body:ws {
+  name: message 1
+  content: '''
+    {hello guys!}
+  '''
+}

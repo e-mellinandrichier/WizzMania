@@ -1,0 +1,272 @@
+/* MSN Messenger XP Style Sheet */
+
+/* Main Window Background - Vintage Blue Gradient */
+QWidget#LoginWindow {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #6B9BC7,
+        stop:0.3 #5A8BB7,
+        stop:0.7 #4A7BA7,
+        stop:1 #3A6B97);
+    font-family: 'Tahoma', 'Arial', sans-serif;
+}
+
+/* Title Bar - Enhanced Vintage Blue Gradient */
+QWidget#titleBar {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #1AA7FF,
+        stop:0.05 #0D8FFF,
+        stop:0.10 #0066FF,
+        stop:0.15 #0055EE,
+        stop:0.20 #0044DD,
+        stop:0.50 #0036D3,
+        stop:0.80 #0028BB,
+        stop:0.95 #001FAA,
+        stop:1.0 #001899);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-top: 1px solid #3A6BC1;
+    border-left: 1px solid #2A5CB1;
+    border-right: 1px solid #1A4CA1;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Title Bar Buttons */
+/* Red - Close Button */
+QPushButton#closeButton {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #FF5F57, stop:1 #E0443E);
+    border: 1px solid #CC3A35;
+    border-radius: 2px;
+    color: white;
+    font-size: 16px;
+}
+
+QPushButton#closeButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #FF6F67, stop:1 #F0544E);
+}
+
+/* Yellow - Minimize Button */
+QPushButton#minimizeButton {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #FFBD2E, stop:1 #E6A826);
+    border: 1px solid #CC8F20;
+    border-radius: 2px;
+    color: white;
+    font-size: 11px;
+}
+
+QPushButton#minimizeButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #FFCD3E, stop:1 #F0B836);
+}
+
+/* Green - Maximize Button */
+QPushButton#maximizeButton {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #28CA42, stop:1 #22A836);
+    border: 1px solid #1D8A2C;
+    border-radius: 2px;
+    color: white;
+    font-size: 11px;
+}
+
+QPushButton#maximizeButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #38DA52, stop:1 #32B846);
+}
+
+/* Window Container */
+QWidget#windowContainer {
+    background-color: white;
+    border: 3px solid;
+    border-color: #2A5CB1 #0036D3 #0036D3 #2A5CB1;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+/* Header Section - Vintage Blue Gradient */
+QWidget#headerWidget {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #FFFFFF,
+        stop:0.15 #F0F8FF,
+        stop:0.30 #E0F0FF,
+        stop:0.50 #D0E8FF,
+        stop:0.70 #C0E0FF,
+        stop:0.85 #B0D8FF,
+        stop:1.0 #A0D0FF);
+    border-bottom: 2px solid #7BB0E8;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 
+                inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+
+QWidget#iconLabel {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #92D7F1, stop:0.5 #5AB8E0, stop:1.0 #3FA4D1);
+    border: 2px solid #2E8BB8;
+    border-radius: 24px;
+}
+
+/* Form Inputs */
+QLineEdit#usernameInput,
+QLineEdit#passwordInput {
+    background-color: #FFFFFF;
+    border: 1px solid #7F9DB9;
+    padding: 2px 3px;
+    font-size: 11px;
+    font-family: 'Tahoma', 'Arial', sans-serif;
+}
+
+QLineEdit#usernameInput:focus,
+QLineEdit#passwordInput:focus {
+    border: 1px solid #3b82f6;
+}
+
+/* Checkbox */
+QCheckBox#rememberMeCheckBox {
+    font-size: 11px;
+    color: #000000;
+}
+
+QCheckBox#rememberMeCheckBox::indicator {
+    width: 13px;
+    height: 13px;
+    border: 1px solid #ADB8C4;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #FFFFFF, stop:1 #ECF4FE);
+    border-radius: 2px;
+}
+
+QCheckBox#rememberMeCheckBox::indicator:checked {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #FFEAA5, stop:0.5 #FFD952, stop:1.0 #FFCA00);
+}
+
+/* Sign In Button - Windows XP Style Gradient */
+QPushButton#loginButton {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 rgb(255, 200, 80),
+        stop:0.5 rgb(252, 165, 3),
+        stop:1 rgb(220, 140, 0));
+    border: 1px solid #B87300;
+    border-top: 1px solid #FFD700;
+    border-left: 1px solid #FFA500;
+    border-radius: 3px;
+    color: #FFFFFF;
+    font-size: 11px;
+    font-weight: bold;
+    font-family: 'Tahoma', 'Arial', sans-serif;
+    padding: 4px;
+}
+
+QPushButton#loginButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 rgb(255, 210, 90),
+        stop:0.5 rgb(255, 175, 10),
+        stop:1 rgb(240, 150, 5));
+    border-top: 1px solid #FFE55C;
+    border-left: 1px solid #FFB84D;
+}
+
+QPushButton#loginButton:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 rgb(220, 140, 0),
+        stop:0.5 rgb(200, 120, 0),
+        stop:1 rgb(180, 110, 0));
+    border: 1px inset #B87300;
+    border-top: 1px solid #996600;
+    border-left: 1px solid #996600;
+}
+
+/* Sign Up Button - Same style as Sign In */
+QPushButton#registerButton {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 rgb(255, 200, 80),
+        stop:0.5 rgb(252, 165, 3),
+        stop:1 rgb(220, 140, 0));
+    border: 1px solid #B87300;
+    border-top: 1px solid #FFD700;
+    border-left: 1px solid #FFA500;
+    border-radius: 3px;
+    color: #FFFFFF;
+    font-size: 11px;
+    font-weight: bold;
+    font-family: 'Tahoma', 'Arial', sans-serif;
+    padding: 4px;
+}
+
+QPushButton#registerButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 rgb(255, 210, 90),
+        stop:0.5 rgb(255, 175, 10),
+        stop:1 rgb(240, 150, 5));
+    border-top: 1px solid #FFE55C;
+    border-left: 1px solid #FFB84D;
+}
+
+QPushButton#registerButton:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 rgb(220, 140, 0),
+        stop:0.5 rgb(200, 120, 0),
+        stop:1 rgb(180, 110, 0));
+    border: 1px inset #B87300;
+    border-top: 1px solid #996600;
+    border-left: 1px solid #996600;
+}
+
+/* Footer */
+QWidget#footerWidget {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #F0F4F7, stop:1.0 #E0E8EF);
+    border-top: 1px solid #C6D5E3;
+}
+
+/* Status Label - Same vintage blue gradient as title bar */
+QLabel#statusLabel {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #1AA7FF,
+        stop:0.05 #0D8FFF,
+        stop:0.10 #0066FF,
+        stop:0.15 #0055EE,
+        stop:0.20 #0044DD,
+        stop:0.50 #0036D3,
+        stop:0.80 #0028BB,
+        stop:0.95 #001FAA,
+        stop:1.0 #001899);
+    padding: 8px;
+    border-top: 1px solid #3A6BC1;
+}
+
+/* Title Bar Label - Vintage Style */
+QLabel#titleLabel {
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5),
+                 0px 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+/* Header Title Label - Vintage Embossed Style */
+QLabel#titleHeaderLabel {
+    font-size: 18px;
+    font-weight: bold;
+    color: #003B75;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8),
+                 0px 1px 1px rgba(0, 0, 0, 0.2),
+                 -1px -1px 0px rgba(0, 0, 0, 0.1);
+}
+
+/* Links */
+QLabel[class="forgotPasswordLink"],
+QLabel[class="getPassportLink"],
+QLabel#termsLabel {
+    font-size: 11px;
+    color: #0066CC;
+}
+
+QLabel[class="forgotPasswordLink"]:hover,
+QLabel[class="getPassportLink"]:hover {
+    color: #0088FF;
+}

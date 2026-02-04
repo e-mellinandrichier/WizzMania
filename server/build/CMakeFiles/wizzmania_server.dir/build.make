@@ -95,6 +95,7 @@ wizzmania_server_EXTERNAL_OBJECTS =
 
 wizzmania_server: CMakeFiles/wizzmania_server.dir/main.cpp.o
 wizzmania_server: CMakeFiles/wizzmania_server.dir/build.make
+wizzmania_server: /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib/libsqlite3.tbd
 wizzmania_server: CMakeFiles/wizzmania_server.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/melli/Code/WizzMania/server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable wizzmania_server"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/wizzmania_server.dir/link.txt --verbose=$(VERBOSE)
