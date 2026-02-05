@@ -26,6 +26,7 @@ signals:
     void loginSuccessful(const QString &username,
                          const QString &displayName,
                          const QString &avatarFilename,
+                         const QString &status,
                          const QString &serverUrl);
 
 private slots:
@@ -35,7 +36,8 @@ private slots:
     void onRegisterFailed(const QString &error);
     void onLoginSuccess(const QString &username,
                         const QString &displayName,
-                        const QString &avatarFilename);
+                        const QString &avatarFilename,
+                        const QString &status);
     void onLoginFailed(const QString &error);
 
 private:

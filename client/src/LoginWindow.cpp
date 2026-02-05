@@ -298,9 +298,10 @@ void LoginWindow::onRegisterFailed(const QString &error)
 
 void LoginWindow::onLoginSuccess(const QString &username,
                                  const QString &displayName,
-                                 const QString &avatarFilename)
+                                 const QString &avatarFilename,
+                                 const QString &status)
 {
-    emit loginSuccessful(username, displayName, avatarFilename, m_serverUrl);
+    emit loginSuccessful(username, displayName, avatarFilename, status, m_serverUrl);
 }
 
 void LoginWindow::onLoginFailed(const QString &error)

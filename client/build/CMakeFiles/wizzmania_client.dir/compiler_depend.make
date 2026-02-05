@@ -4145,17 +4145,22 @@ CMakeFiles/wizzmania_client.dir/src/ChatWindow.cpp.o: /Users/melli/Code/WizzMani
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdint.h \
   wizzmania_client_autogen/include/ui_ChatWindow.h \
+  /Users/melli/Code/WizzMania/client/src/AuthClient.h \
   /Users/melli/Code/WizzMania/client/src/ChatWindow.h \
   /Users/melli/Code/WizzMania/client/src/WebSocketClient.h \
+  /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/QCoreApplication \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/QDateTime \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/QDebug \
+  /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/QDir \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/QFile \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/QFlags \
+  /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/QIODevice \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/QJsonArray \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/QJsonDocument \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/QJsonObject \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/QList \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/QMap \
+  /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/QMetaType \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/QObject \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/QRect \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/QSharedDataPointer \
@@ -4217,11 +4222,14 @@ CMakeFiles/wizzmania_client.dir/src/ChatWindow.cpp.o: /Users/melli/Code/WizzMani
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qdatetime.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qdeadlinetimer.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qdebug.h \
+  /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qdir.h \
+  /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qdirlisting.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qendian.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qeventloop.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qexceptionhandling.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qfile.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qfiledevice.h \
+  /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qfileinfo.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qflags.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qfloat16.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qforeach.h \
@@ -4305,6 +4313,7 @@ CMakeFiles/wizzmania_client.dir/src/ChatWindow.cpp.o: /Users/melli/Code/WizzMani
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qtextstream.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qtformat_impl.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qtimer.h \
+  /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qtimezone.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qtmetamacros.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qtnoop.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qtpreprocessorsupport.h \
@@ -4371,19 +4380,25 @@ CMakeFiles/wizzmania_client.dir/src/ChatWindow.cpp.o: /Users/melli/Code/WizzMani
   /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/qvectornd.h \
   /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/qwindowdefs.h \
   /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/QAbstractSocket \
+  /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/QNetworkAccessManager \
   /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/QNetworkProxy \
+  /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/QNetworkReply \
   /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/QNetworkRequest \
   /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/QSslConfiguration \
   /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/QSslError \
+  /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/QSslPreSharedKeyAuthenticator \
   /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/qabstractsocket.h \
   /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/qhostaddress.h \
   /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/qhttpheaders.h \
+  /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/qnetworkaccessmanager.h \
   /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/qnetworkproxy.h \
+  /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/qnetworkreply.h \
   /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/qnetworkrequest.h \
   /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/qssl.h \
   /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/qsslcertificate.h \
   /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/qsslconfiguration.h \
   /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/qsslerror.h \
+  /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/qsslpresharedkeyauthenticator.h \
   /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/qsslsocket.h \
   /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/qtcpsocket.h \
   /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/qtnetwork-config.h \
@@ -4395,8 +4410,12 @@ CMakeFiles/wizzmania_client.dir/src/ChatWindow.cpp.o: /Users/melli/Code/WizzMani
   /opt/homebrew/opt/qt/lib/QtWebSockets.framework/Headers/qwebsocketprotocol.h \
   /opt/homebrew/opt/qt/lib/QtWebSockets.framework/Headers/qwebsockets_global.h \
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QApplication \
+  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QDialog \
+  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QDialogButtonBox \
+  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QFormLayout \
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QHBoxLayout \
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QLabel \
+  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QLayout \
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QLineEdit \
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QListWidget \
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QListWidgetItem \
@@ -4413,6 +4432,9 @@ CMakeFiles/wizzmania_client.dir/src/ChatWindow.cpp.o: /Users/melli/Code/WizzMani
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qabstractspinbox.h \
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qapplication.h \
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qboxlayout.h \
+  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qdialog.h \
+  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qdialogbuttonbox.h \
+  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qformlayout.h \
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qframe.h \
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qgridlayout.h \
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qlabel.h \
@@ -7562,8 +7584,6 @@ wizzmania_client_autogen/mocs_compilation.cpp:
 
 /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qmessagebox.h:
 
-/opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qdialog.h:
-
 /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qcheckbox.h:
 
 /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QMessageBox:
@@ -7588,6 +7608,8 @@ wizzmania_client_autogen/include/ui_LoginWindow.h:
 
 /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qframe.h:
 
+/opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qdialog.h:
+
 /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qboxlayout.h:
 
 /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qabstractslider.h:
@@ -7604,9 +7626,13 @@ wizzmania_client_autogen/include/ui_LoginWindow.h:
 
 /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QLineEdit:
 
+/opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QLayout:
+
 /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QLabel:
 
 /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QHBoxLayout:
+
+/opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QDialog:
 
 /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/qvalidator.h:
 
@@ -7622,11 +7648,21 @@ wizzmania_client_autogen/include/ui_LoginWindow.h:
 
 /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qjsonarray.h:
 
+/opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qfileinfo.h:
+
+/opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qdirlisting.h:
+
+/opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qdir.h:
+
 /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qabstractitemmodel.h:
 
 /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/QFile:
 
+/opt/homebrew/opt/qt/lib/QtCore.framework/Headers/QDir:
+
 /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/QDateTime:
+
+/opt/homebrew/opt/qt/lib/QtCore.framework/Headers/QCoreApplication:
 
 wizzmania_client_autogen/include/ui_ChatWindow.h:
 
@@ -8326,6 +8362,8 @@ wizzmania_client_autogen/UVLADIE3JM/moc_LoginWindow.cpp:
 
 /opt/homebrew/opt/qt/lib/cmake/Qt6GuiTools/Qt6GuiToolsConfigVersion.cmake:
 
+/opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QDialogButtonBox:
+
 /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtCore.framework/Versions/A/Headers/qcontainerfwd.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__fwd/string.h:
@@ -8435,6 +8473,8 @@ wizzmania_client_autogen/UVLADIE3JM/moc_LoginWindow.cpp:
 /opt/homebrew/opt/qt/lib/cmake/Qt6Gui/Qt6QJp2PluginAdditionalTargetInfo.cmake:
 
 /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qtypes.h:
+
+/opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qformlayout.h:
 
 /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtCore.framework/Versions/A/Headers/qtdeprecationmarkers.h:
 
@@ -9013,6 +9053,8 @@ wizzmania_client_autogen/UVLADIE3JM/moc_LoginWindow.cpp:
 /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtCore.framework/Versions/A/Headers/qeventloop.h:
 
 /opt/homebrew/share/cmake/Modules/Platform/UnixPaths.cmake:
+
+/opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QFormLayout:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__system_error/error_condition.h:
 
@@ -10625,6 +10667,8 @@ wizzmania_client_autogen/UVLADIE3JM/moc_ChatWindow.cpp:
 /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/q17memory.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__numeric/transform_inclusive_scan.h:
+
+/opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qtimezone.h:
 
 /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtCore.framework/Versions/A/Headers/qnumeric.h:
 

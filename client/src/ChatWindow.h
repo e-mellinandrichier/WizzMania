@@ -6,6 +6,7 @@
 #include <QMap>
 #include <QStringList>
 #include "WebSocketClient.h"
+#include "AuthClient.h"
 
 namespace Ui {
     class ChatWindow;
@@ -19,6 +20,7 @@ public:
     explicit ChatWindow(const QString &username,
                         const QString &displayName,
                         const QString &avatarFilename,
+                        const QString &status,
                         const QString &serverUrl,
                         QWidget *parent = nullptr);
     ~ChatWindow();
@@ -42,6 +44,7 @@ private:
     void sendPrivateMessage(const QString &to, const QString &text);
     void updateUserList(const QJsonArray &users);
     void handleServerMessage(const QJsonObject &json);
+    void showHomeView();
     void showProfileView();
     void switchToConversation(const QString &username);
     void addMessageToConversation(const QString &from, const QString &message, bool isFromMe = false);
@@ -50,8 +53,10 @@ private:
     QString m_username;
     QString m_displayName;
     QString m_avatarFilename;
+    QString m_status;
     QString m_serverUrl;
     WebSocketClient *m_webSocketClient;
+    AuthClient *m_authClient;
     QPoint m_dragPosition;
     bool m_dragging;
     QString m_currentChatTarget;

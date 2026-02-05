@@ -48,13 +48,16 @@ template <> constexpr inline auto AuthClient::qt_create_metaobjectdata<qt_meta_t
         "username",
         "displayName",
         "avatarFilename",
+        "status",
         "loginFailed",
+        "profileUpdated",
+        "profileUpdateFailed",
         "registerUser",
         "password",
         "name",
         "picture",
-        "status",
         "login",
+        "updateProfile",
         "onRegisterFinished",
         "onLoginFinished"
     };
@@ -67,38 +70,48 @@ template <> constexpr inline auto AuthClient::qt_create_metaobjectdata<qt_meta_t
             { QMetaType::QString, 4 },
         }}),
         // Signal 'loginSuccess'
-        QtMocHelpers::SignalData<void(const QString &, const QString &, const QString &)>(5, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { QMetaType::QString, 6 }, { QMetaType::QString, 7 }, { QMetaType::QString, 8 },
+        QtMocHelpers::SignalData<void(const QString &, const QString &, const QString &, const QString &)>(5, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QString, 6 }, { QMetaType::QString, 7 }, { QMetaType::QString, 8 }, { QMetaType::QString, 9 },
         }}),
         // Signal 'loginFailed'
-        QtMocHelpers::SignalData<void(const QString &)>(9, 2, QMC::AccessPublic, QMetaType::Void, {{
+        QtMocHelpers::SignalData<void(const QString &)>(10, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QString, 4 },
+        }}),
+        // Signal 'profileUpdated'
+        QtMocHelpers::SignalData<void()>(11, 2, QMC::AccessPublic, QMetaType::Void),
+        // Signal 'profileUpdateFailed'
+        QtMocHelpers::SignalData<void(const QString &)>(12, 2, QMC::AccessPublic, QMetaType::Void, {{
             { QMetaType::QString, 4 },
         }}),
         // Slot 'registerUser'
-        QtMocHelpers::SlotData<void(const QString &, const QString &, const QString &, const QString &, const QString &)>(10, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { QMetaType::QString, 6 }, { QMetaType::QString, 11 }, { QMetaType::QString, 12 }, { QMetaType::QString, 13 },
-            { QMetaType::QString, 14 },
+        QtMocHelpers::SlotData<void(const QString &, const QString &, const QString &, const QString &, const QString &)>(13, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QString, 6 }, { QMetaType::QString, 14 }, { QMetaType::QString, 15 }, { QMetaType::QString, 16 },
+            { QMetaType::QString, 9 },
         }}),
         // Slot 'registerUser'
-        QtMocHelpers::SlotData<void(const QString &, const QString &, const QString &, const QString &)>(10, 2, QMC::AccessPublic | QMC::MethodCloned, QMetaType::Void, {{
-            { QMetaType::QString, 6 }, { QMetaType::QString, 11 }, { QMetaType::QString, 12 }, { QMetaType::QString, 13 },
+        QtMocHelpers::SlotData<void(const QString &, const QString &, const QString &, const QString &)>(13, 2, QMC::AccessPublic | QMC::MethodCloned, QMetaType::Void, {{
+            { QMetaType::QString, 6 }, { QMetaType::QString, 14 }, { QMetaType::QString, 15 }, { QMetaType::QString, 16 },
         }}),
         // Slot 'registerUser'
-        QtMocHelpers::SlotData<void(const QString &, const QString &, const QString &)>(10, 2, QMC::AccessPublic | QMC::MethodCloned, QMetaType::Void, {{
-            { QMetaType::QString, 6 }, { QMetaType::QString, 11 }, { QMetaType::QString, 12 },
+        QtMocHelpers::SlotData<void(const QString &, const QString &, const QString &)>(13, 2, QMC::AccessPublic | QMC::MethodCloned, QMetaType::Void, {{
+            { QMetaType::QString, 6 }, { QMetaType::QString, 14 }, { QMetaType::QString, 15 },
         }}),
         // Slot 'registerUser'
-        QtMocHelpers::SlotData<void(const QString &, const QString &)>(10, 2, QMC::AccessPublic | QMC::MethodCloned, QMetaType::Void, {{
-            { QMetaType::QString, 6 }, { QMetaType::QString, 11 },
+        QtMocHelpers::SlotData<void(const QString &, const QString &)>(13, 2, QMC::AccessPublic | QMC::MethodCloned, QMetaType::Void, {{
+            { QMetaType::QString, 6 }, { QMetaType::QString, 14 },
         }}),
         // Slot 'login'
-        QtMocHelpers::SlotData<void(const QString &, const QString &)>(15, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { QMetaType::QString, 6 }, { QMetaType::QString, 11 },
+        QtMocHelpers::SlotData<void(const QString &, const QString &)>(17, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QString, 6 }, { QMetaType::QString, 14 },
+        }}),
+        // Slot 'updateProfile'
+        QtMocHelpers::SlotData<void(const QString &, const QString &, const QString &, const QString &)>(18, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QString, 6 }, { QMetaType::QString, 15 }, { QMetaType::QString, 16 }, { QMetaType::QString, 9 },
         }}),
         // Slot 'onRegisterFinished'
-        QtMocHelpers::SlotData<void()>(16, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(19, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onLoginFinished'
-        QtMocHelpers::SlotData<void()>(17, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(20, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -124,15 +137,18 @@ void AuthClient::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         switch (_id) {
         case 0: _t->registerSuccess(); break;
         case 1: _t->registerFailed((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1]))); break;
-        case 2: _t->loginSuccess((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[3]))); break;
+        case 2: _t->loginSuccess((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[3])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[4]))); break;
         case 3: _t->loginFailed((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1]))); break;
-        case 4: _t->registerUser((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[3])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[4])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[5]))); break;
-        case 5: _t->registerUser((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[3])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[4]))); break;
-        case 6: _t->registerUser((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[3]))); break;
-        case 7: _t->registerUser((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[2]))); break;
-        case 8: _t->login((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[2]))); break;
-        case 9: _t->onRegisterFinished(); break;
-        case 10: _t->onLoginFinished(); break;
+        case 4: _t->profileUpdated(); break;
+        case 5: _t->profileUpdateFailed((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1]))); break;
+        case 6: _t->registerUser((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[3])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[4])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[5]))); break;
+        case 7: _t->registerUser((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[3])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[4]))); break;
+        case 8: _t->registerUser((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[3]))); break;
+        case 9: _t->registerUser((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[2]))); break;
+        case 10: _t->login((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[2]))); break;
+        case 11: _t->updateProfile((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[3])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[4]))); break;
+        case 12: _t->onRegisterFinished(); break;
+        case 13: _t->onLoginFinished(); break;
         default: ;
         }
     }
@@ -141,9 +157,13 @@ void AuthClient::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
             return;
         if (QtMocHelpers::indexOfMethod<void (AuthClient::*)(const QString & )>(_a, &AuthClient::registerFailed, 1))
             return;
-        if (QtMocHelpers::indexOfMethod<void (AuthClient::*)(const QString & , const QString & , const QString & )>(_a, &AuthClient::loginSuccess, 2))
+        if (QtMocHelpers::indexOfMethod<void (AuthClient::*)(const QString & , const QString & , const QString & , const QString & )>(_a, &AuthClient::loginSuccess, 2))
             return;
         if (QtMocHelpers::indexOfMethod<void (AuthClient::*)(const QString & )>(_a, &AuthClient::loginFailed, 3))
+            return;
+        if (QtMocHelpers::indexOfMethod<void (AuthClient::*)()>(_a, &AuthClient::profileUpdated, 4))
+            return;
+        if (QtMocHelpers::indexOfMethod<void (AuthClient::*)(const QString & )>(_a, &AuthClient::profileUpdateFailed, 5))
             return;
     }
 }
@@ -167,14 +187,14 @@ int AuthClient::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 11)
+        if (_id < 14)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 11;
+        _id -= 14;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 11)
+        if (_id < 14)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 11;
+        _id -= 14;
     }
     return _id;
 }
@@ -192,14 +212,26 @@ void AuthClient::registerFailed(const QString & _t1)
 }
 
 // SIGNAL 2
-void AuthClient::loginSuccess(const QString & _t1, const QString & _t2, const QString & _t3)
+void AuthClient::loginSuccess(const QString & _t1, const QString & _t2, const QString & _t3, const QString & _t4)
 {
-    QMetaObject::activate<void>(this, &staticMetaObject, 2, nullptr, _t1, _t2, _t3);
+    QMetaObject::activate<void>(this, &staticMetaObject, 2, nullptr, _t1, _t2, _t3, _t4);
 }
 
 // SIGNAL 3
 void AuthClient::loginFailed(const QString & _t1)
 {
     QMetaObject::activate<void>(this, &staticMetaObject, 3, nullptr, _t1);
+}
+
+// SIGNAL 4
+void AuthClient::profileUpdated()
+{
+    QMetaObject::activate(this, &staticMetaObject, 4, nullptr);
+}
+
+// SIGNAL 5
+void AuthClient::profileUpdateFailed(const QString & _t1)
+{
+    QMetaObject::activate<void>(this, &staticMetaObject, 5, nullptr, _t1);
 }
 QT_WARNING_POP

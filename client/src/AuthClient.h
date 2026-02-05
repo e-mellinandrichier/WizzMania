@@ -21,14 +21,21 @@ public slots:
                       const QString &picture = QString(),
                       const QString &status = QString());
     void login(const QString &username, const QString &password);
+    void updateProfile(const QString &username,
+                       const QString &name,
+                       const QString &picture,
+                       const QString &status);
 
 signals:
     void registerSuccess();
     void registerFailed(const QString &error);
     void loginSuccess(const QString &username,
                       const QString &displayName,
-                      const QString &avatarFilename);
+                      const QString &avatarFilename,
+                      const QString &status);
     void loginFailed(const QString &error);
+    void profileUpdated();
+    void profileUpdateFailed(const QString &error);
 
 private slots:
     void onRegisterFinished();
@@ -39,6 +46,7 @@ private:
     QString m_serverUrl;
     QNetworkReply *m_registerReply;
     QNetworkReply *m_loginReply;
+    QNetworkReply *m_updateReply;
 };
 
 #endif // AUTHCLIENT_H

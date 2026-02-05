@@ -12,6 +12,7 @@ AuthClient::AuthClient(QObject *parent)
     , m_serverUrl("http://localhost:18080")
     , m_registerReply(nullptr)
     , m_loginReply(nullptr)
+    , m_updateReply(nullptr)
 {
 }
 
@@ -68,6 +69,50 @@ void AuthClient::login(const QString &username, const QString &password)
     connect(m_loginReply, &QNetworkReply::finished, this, &AuthClient::onLoginFinished);
 }
 
+void AuthClient::updateProfile(const QString &username,
+                               const QString &name,
+                               const QString &picture,
+                               const QString &status)
+{
+    QUrl url(m_serverUrl + "/auth/update");
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QJsonObject json;
+    json["username"] = username;
+    json["name"] = name;
+    json["picture"] = picture;
+    json["status"] = status;
+
+    QJsonDocument doc(json);
+    QByteArray data = doc.toJson();
+
+    if (m_updateReply) {
+        m_updateReply->deleteLater();
+        m_updateReply = nullptr;
+    }
+    m_updateReply = m_networkManager->post(request, data);
+    connect(m_updateReply, &QNetworkReply::finished, this, [this]() {
+        if (!m_updateReply) return;
+        QByteArray response = m_updateReply->readAll();
+        int statusCode = m_updateReply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        m_updateReply->deleteLater();
+        m_updateReply = nullptr;
+
+        if (statusCode == 200) {
+            emit profileUpdated();
+        } else {
+            QJsonDocument doc = QJsonDocument::fromJson(response);
+            QJsonObject obj = doc.object();
+            QString error = obj["error"].toString();
+            if (error.isEmpty()) {
+                error = "Profile update failed";
+            }
+            emit profileUpdateFailed(error);
+        }
+    });
+}
+
 void AuthClient::onRegisterFinished()
 {
     if (!m_registerReply) return;
@@ -111,7 +156,8 @@ void AuthClient::onLoginFinished()
         if (avatarFilename.isEmpty()) {
             avatarFilename = "default.png";
         }
-        emit loginSuccess(username, displayName, avatarFilename);
+        QString status = obj["status"].toString().trimmed();
+        emit loginSuccess(username, displayName, avatarFilename, status);
     } else {
         QJsonDocument doc = QJsonDocument::fromJson(response);
         QJsonObject obj = doc.object();

@@ -231,6 +231,22 @@
               </property>
              </widget>
             </item>
+            <item>
+             <widget class="QPushButton" name="profileButton">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Profile</string>
+              </property>
+              <property name="styleSheet">
+               <string>font-weight: bold;</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
          </item>

@@ -14,10 +14,11 @@ int main(int argc, char *argv[])
                      [&](const QString &username,
                          const QString &displayName,
                          const QString &avatarFilename,
+                         const QString &status,
                          const QString &serverUrl) {
         loginWindow.hide();
         
-        ChatWindow *chatWindow = new ChatWindow(username, displayName, avatarFilename, serverUrl);
+        ChatWindow *chatWindow = new ChatWindow(username, displayName, avatarFilename, status, serverUrl);
         chatWindow->show();
         
         QObject::connect(chatWindow, &ChatWindow::destroyed, &app, &QApplication::quit);

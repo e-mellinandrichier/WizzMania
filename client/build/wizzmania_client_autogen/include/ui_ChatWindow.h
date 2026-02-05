@@ -42,6 +42,7 @@ public:
     QVBoxLayout *userListLayout;
     QLabel *userListTitleLabel;
     QListWidget *userList;
+    QPushButton *profileButton;
     QWidget *chatAreaWidget;
     QVBoxLayout *chatAreaLayout;
     QWidget *chatHeaderWidget;
@@ -134,6 +135,12 @@ public:
 
         userListLayout->addWidget(userList);
 
+        profileButton = new QPushButton(userListWidget);
+        profileButton->setObjectName("profileButton");
+        profileButton->setMinimumSize(QSize(0, 26));
+
+        userListLayout->addWidget(profileButton);
+
 
         contentLayout->addWidget(userListWidget);
 
@@ -224,6 +231,8 @@ public:
         userListTitleLabel->setText(QCoreApplication::translate("ChatWindow", "Online Users", nullptr));
         userListTitleLabel->setStyleSheet(QCoreApplication::translate("ChatWindow", "font-size: 11px; font-weight: bold; color: #003B75; padding: 5px;", nullptr));
         userList->setStyleSheet(QCoreApplication::translate("ChatWindow", "border: 1px solid #7F9DB9; font-family: Tahoma, Arial, sans-serif; font-size: 11px; background-color: white;", nullptr));
+        profileButton->setText(QCoreApplication::translate("ChatWindow", "Profile", nullptr));
+        profileButton->setStyleSheet(QCoreApplication::translate("ChatWindow", "font-weight: bold;", nullptr));
         chatWithLabel->setText(QCoreApplication::translate("ChatWindow", "Chat with: None", nullptr));
         chatWithLabel->setStyleSheet(QCoreApplication::translate("ChatWindow", "font-size: 11px; font-weight: bold; color: #003B75; padding: 5px;", nullptr));
         chatDisplay->setPlaceholderText(QCoreApplication::translate("ChatWindow", "Select a user to start chatting...", nullptr));

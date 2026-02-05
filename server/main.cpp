@@ -261,6 +261,93 @@ int main() {
             }
         });
 
+    // Authentication: Update profile (name, picture, status)
+    // POST /auth/update
+    // Body (JSON): {
+    //   "username": "alice",
+    //   "name": "New Name",
+    //   "picture": "NewAvatar.png",
+    //   "status": "New status"
+    // }
+    // Returns: {"success": true} or error
+    CROW_ROUTE(app, "/auth/update")
+        .methods("POST"_method)
+        ([&](const crow::request& req) {
+            try {
+                auto json = crow::json::load(req.body);
+                if (!json || !json.has("username")) {
+                    crow::response res(400);
+                    res.body = R"({"success": false, "error": "Missing username"})";
+                    res.set_header("Content-Type", "application/json");
+                    return res;
+                }
+
+                std::string username = json["username"].s();
+
+                std::string name;
+                if (json.has("name")) {
+                    name = json["name"].s();
+                }
+
+                std::string picture;
+                if (json.has("picture")) {
+                    picture = json["picture"].s();
+                }
+
+                std::string status;
+                if (json.has("status")) {
+                    status = json["status"].s();
+                }
+
+                std::lock_guard<std::mutex> lock(auth_mutex);
+
+                sqlite3_stmt* stmt = nullptr;
+                const char* sql =
+                    "UPDATE users SET name = ?, picture = ?, status = ? WHERE login = ?;";
+
+                if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+                    crow::response res(500);
+                    res.body = R"({"success": false, "error": "Failed to prepare statement"})";
+                    res.set_header("Content-Type", "application/json");
+                    return res;
+                }
+
+                sqlite3_bind_text(stmt, 1, name.c_str(),    -1, SQLITE_TRANSIENT);
+                sqlite3_bind_text(stmt, 2, picture.c_str(), -1, SQLITE_TRANSIENT);
+                sqlite3_bind_text(stmt, 3, status.c_str(),  -1, SQLITE_TRANSIENT);
+                sqlite3_bind_text(stmt, 4, username.c_str(),-1, SQLITE_TRANSIENT);
+
+                int rc = sqlite3_step(stmt);
+                sqlite3_finalize(stmt);
+
+                if (rc != SQLITE_DONE) {
+                    crow::response res(500);
+                    res.body = R"({"success": false, "error": "Failed to update user"})";
+                    res.set_header("Content-Type", "application/json");
+                    return res;
+                }
+
+                // Check that at least one row was updated
+                if (sqlite3_changes(db) == 0) {
+                    crow::response res(404);
+                    res.body = R"({"success": false, "error": "User not found"})";
+                    res.set_header("Content-Type", "application/json");
+                    return res;
+                }
+
+                crow::response res(200);
+                res.body = R"({"success": true})";
+                res.set_header("Content-Type", "application/json");
+                return res;
+            }
+            catch (...) {
+                crow::response res(500);
+                res.body = R"({"success": false, "error": "Internal server error"})";
+                res.set_header("Content-Type", "application/json");
+                return res;
+            }
+        });
+
     // Get list of all registered users
     // GET /auth/users
     // Returns: {"success": true, "users": [{"login": "...", "name": "..."}, ...]} or error

@@ -13,10 +13,20 @@
 #include <QColor>
 #include <QCoreApplication>
 #include <QDir>
+#include <QDialog>
+#include <QFormLayout>
+#include <QLineEdit>
+#include <QDialogButtonBox>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QListWidget>
+#include <QLabel>
+#include <QPushButton>
 
 ChatWindow::ChatWindow(const QString &username,
                        const QString &displayName,
                        const QString &avatarFilename,
+                       const QString &status,
                        const QString &serverUrl,
                        QWidget *parent)
     : QWidget(parent)
@@ -24,8 +34,10 @@ ChatWindow::ChatWindow(const QString &username,
     , m_username(username)
     , m_displayName(displayName)
     , m_avatarFilename(avatarFilename)
+    , m_status(status)
     , m_serverUrl(serverUrl)
     , m_webSocketClient(new WebSocketClient(this))
+    , m_authClient(new AuthClient(this))
     , m_dragging(false)
     , m_identified(false)
     , m_conversations()
@@ -91,7 +103,7 @@ ChatWindow::ChatWindow(const QString &username,
     this->setStyleSheet(qssStyle + "\n" + gradientStyle);
 
     // Style title bar buttons (fallback)
-    ui->closeButton->setStyleSheet(
+    const QString closeButtonStyle =
         "QPushButton#closeButton {"
         "    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
         "        stop:0 #FF5F57, stop:1 #E0443E);"
@@ -101,8 +113,8 @@ ChatWindow::ChatWindow(const QString &username,
         "QPushButton#closeButton:hover {"
         "    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
         "        stop:0 #FF6F67, stop:1 #F0544E);"
-        "}"
-    );
+        "}";
+    ui->closeButton->setStyleSheet(closeButtonStyle);
     
     ui->minimizeButton->setStyleSheet(
         "QPushButton#minimizeButton {"
@@ -131,7 +143,7 @@ ChatWindow::ChatWindow(const QString &username,
     );
 
     // Style Send button
-    ui->sendButton->setStyleSheet(
+    const QString sendButtonStyle =
         "QPushButton#sendButton {"
         "    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
         "        stop:0 rgb(255, 200, 80),"
@@ -160,11 +172,251 @@ ChatWindow::ChatWindow(const QString &username,
         "        stop:1 rgb(180, 110, 0));"
         "    border: 1px inset #B87300;"
         "}"
-    );
+    ;
+    ui->sendButton->setStyleSheet(sendButtonStyle);
+
+    // Style Profile button the same as Send button (different object name)
+    QString profileButtonStyle = sendButtonStyle;
+    profileButtonStyle.replace("QPushButton#sendButton", "QPushButton#profileButton");
+    ui->profileButton->setStyleSheet(profileButtonStyle);
+
+    // Style retro dialog buttons based on send button style (no object name selector)
+    QString dialogButtonStyle = sendButtonStyle;
+    dialogButtonStyle.replace("QPushButton#sendButton", "QPushButton");
 
     // Connect title bar buttons
     connect(ui->closeButton, &QPushButton::clicked, this, &QWidget::close);
     connect(ui->minimizeButton, &QPushButton::clicked, this, &QWidget::showMinimized);
+
+    // Profile button: show dedicated profile screen + MSN-style picture dialog
+    connect(ui->profileButton, &QPushButton::clicked, this, [this, dialogButtonStyle, closeButtonStyle]() {
+        // First show profile screen
+        showProfileView();
+
+        QDialog dialog(this);
+        dialog.setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+        dialog.setModal(true);
+
+        QVBoxLayout *mainLayout = new QVBoxLayout(&dialog);
+        mainLayout->setContentsMargins(0, 0, 0, 0);
+        mainLayout->setSpacing(0);
+
+        // Custom title bar matching main window style
+        QWidget *titleBar = new QWidget(&dialog);
+        titleBar->setObjectName("titleBar");
+        titleBar->setMinimumHeight(28);
+        QHBoxLayout *titleLayout = new QHBoxLayout(titleBar);
+        titleLayout->setContentsMargins(8, 0, 8, 0);
+        QLabel *titleLabel = new QLabel("My Display Picture", titleBar);
+        titleLabel->setObjectName("titleLabel");
+        titleLabel->setStyleSheet(
+            "color: white; font-size: 11px; font-weight: bold; letter-spacing: 0.5px;"
+        );
+        titleLayout->addWidget(titleLabel);
+        titleLayout->addStretch();
+
+        // Red close button like main window
+        QPushButton *closeButton = new QPushButton(titleBar);
+        closeButton->setObjectName("closeButton");
+        closeButton->setText("×");
+        // Slightly larger so it visually matches the main window close button
+        closeButton->setFixedSize(23, 21);
+        closeButton->setStyleSheet(closeButtonStyle);
+        titleLayout->addWidget(closeButton);
+
+        mainLayout->addWidget(titleBar);
+
+        // Content area
+        QWidget *contentWidget = new QWidget(&dialog);
+        contentWidget->setStyleSheet("background-color: #ECE9D8;"); // retro XP beige
+        QVBoxLayout *contentLayout = new QVBoxLayout(contentWidget);
+        contentLayout->setContentsMargins(12, 12, 12, 12);
+        contentLayout->setSpacing(10);
+
+        // Top form for name + status (retro text fields)
+        QFormLayout *topForm = new QFormLayout();
+        QLineEdit *nameEdit = new QLineEdit(contentWidget);
+        QLineEdit *statusEdit = new QLineEdit(contentWidget);
+        nameEdit->setText(m_displayName);
+        statusEdit->setText(m_status);
+        const QString retroLineEditStyle =
+            "QLineEdit {"
+            "  border: 1px solid #7F9DB9;"
+            "  padding: 2px 3px;"
+            "  background-color: white;"
+            "  font-family: Tahoma, Arial, sans-serif;"
+            "  font-size: 11px;"
+            "}";
+        nameEdit->setStyleSheet(retroLineEditStyle);
+        statusEdit->setStyleSheet(retroLineEditStyle);
+        topForm->addRow("Display name:", nameEdit);
+        topForm->addRow("Status message:", statusEdit);
+        contentLayout->addLayout(topForm);
+
+        // Middle area: avatar list (left) + preview (right)
+        QHBoxLayout *middleLayout = new QHBoxLayout();
+
+        // Left: label + list of pictures
+        QVBoxLayout *leftLayout = new QVBoxLayout();
+        QLabel *displayLabel = new QLabel("Display picture", contentWidget);
+        leftLayout->addWidget(displayLabel);
+
+        QListWidget *avatarList = new QListWidget(contentWidget);
+        avatarList->setViewMode(QListView::ListMode);
+        avatarList->setIconSize(QSize(48, 48));
+        avatarList->setSpacing(2);
+        avatarList->setMinimumWidth(180);
+        avatarList->setStyleSheet(
+            "QListWidget {"
+            "  border: 1px solid #7F9DB9;"
+            "  background-color: white;"
+            "  font-family: Tahoma, Arial, sans-serif;"
+            "  font-size: 11px;"
+            "}"
+            "QListWidget::item {"
+            "  padding: 2px 3px;"
+            "}"
+            "QListWidget::item:selected {"
+            "  background: #0A64D0;"
+            "  color: white;"
+            "}"
+            "QListWidget::item:hover {"
+            "  background: #CDE4FF;"
+            "}"
+        );
+        leftLayout->addWidget(avatarList);
+
+        // Populate avatar list from assets/avatar
+        QString avatarsDirPath = QDir::cleanPath(
+            QCoreApplication::applicationDirPath() + "/../assets/avatar");
+        QDir avatarsDir(avatarsDirPath);
+        QStringList filters;
+        filters << "*.png" << "*.jpg" << "*.jpeg" << "*.gif" << "*.webp";
+        QFileInfoList files = avatarsDir.entryInfoList(filters, QDir::Files | QDir::Readable, QDir::Name);
+
+        QString currentAvatar = m_avatarFilename;
+        if (currentAvatar.isEmpty()) {
+            currentAvatar = "default.png";
+        }
+
+        int currentRow = -1;
+        int row = 0;
+        for (const QFileInfo &fi : files) {
+            QPixmap pix(fi.absoluteFilePath());
+            QIcon icon(pix);
+            QString fileName = fi.fileName();
+            QString baseName = fi.completeBaseName();
+
+            QListWidgetItem *item = new QListWidgetItem(icon, baseName, avatarList);
+            item->setData(Qt::UserRole, fileName);
+            avatarList->addItem(item);
+
+            if (fileName.compare(currentAvatar, Qt::CaseInsensitive) == 0) {
+                currentRow = row;
+            }
+            ++row;
+        }
+
+        // Right: Preview
+        QVBoxLayout *rightLayout = new QVBoxLayout();
+        QLabel *previewLabelTitle = new QLabel("Preview", contentWidget);
+        rightLayout->addWidget(previewLabelTitle);
+
+        QLabel *previewLabel = new QLabel(contentWidget);
+        previewLabel->setFixedSize(128, 128);
+        previewLabel->setFrameShape(QFrame::Box);
+        previewLabel->setAlignment(Qt::AlignCenter);
+        previewLabel->setStyleSheet(
+            "background-color: white;"
+            "border: 1px solid #7F9DB9;"
+        );
+        rightLayout->addWidget(previewLabel);
+        rightLayout->addStretch();
+
+        middleLayout->addLayout(leftLayout, 2);
+        middleLayout->addLayout(rightLayout, 1);
+        contentLayout->addLayout(middleLayout);
+
+        // Bottom buttons: only OK (retro style)
+        QHBoxLayout *buttonLayout = new QHBoxLayout();
+        buttonLayout->addStretch();
+        QPushButton *okButton = new QPushButton("OK", contentWidget);
+        okButton->setStyleSheet(dialogButtonStyle);
+        buttonLayout->addWidget(okButton);
+        contentLayout->addLayout(buttonLayout);
+
+        mainLayout->addWidget(contentWidget);
+
+        // Keep track of selected avatar filename
+        QString selectedAvatar = currentAvatar;
+
+        auto updatePreview = [&]() {
+            if (selectedAvatar.isEmpty()) {
+                previewLabel->setPixmap(QPixmap());
+                previewLabel->setText("No picture");
+                return;
+            }
+            QString path = QDir::cleanPath(avatarsDirPath + "/" + selectedAvatar);
+            QPixmap pix(path);
+            if (!pix.isNull()) {
+                previewLabel->setText(QString());
+                previewLabel->setPixmap(pix.scaled(previewLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            } else {
+                previewLabel->setPixmap(QPixmap());
+                previewLabel->setText("No picture");
+            }
+        };
+
+        // Initialize selection
+        if (currentRow >= 0) {
+            avatarList->setCurrentRow(currentRow);
+        }
+        updatePreview();
+
+        QObject::connect(avatarList, &QListWidget::currentItemChanged,
+                         &dialog,
+                         [&](QListWidgetItem *current, QListWidgetItem * /*previous*/) {
+            if (current) {
+                selectedAvatar = current->data(Qt::UserRole).toString();
+                updatePreview();
+            }
+        });
+
+        // Close via title-bar red X
+        QObject::connect(closeButton, &QPushButton::clicked, &dialog, &QDialog::reject);
+        QObject::connect(okButton, &QPushButton::clicked, &dialog, &QDialog::accept);
+
+        if (dialog.exec() == QDialog::Accepted) {
+            // Collect proposed values
+            QString newDisplayName = nameEdit->text().trimmed().isEmpty()
+                                        ? m_username
+                                        : nameEdit->text().trimmed();
+            QString newAvatar = selectedAvatar;
+            QString newStatus = statusEdit->text().trimmed();
+
+            // Send update to server
+            m_authClient->updateProfile(m_username, newDisplayName, newAvatar, newStatus);
+
+            // Apply changes locally immediately for a snappy UX
+            m_displayName = newDisplayName;
+            m_avatarFilename = newAvatar;
+            m_status = newStatus;
+
+            // Refresh avatar in header
+            QPixmap avatarPixmap;
+            if (!m_avatarFilename.isEmpty()) {
+                const QString resourcePath = ":/assets/avatar/" + m_avatarFilename;
+                QString filePath = QDir::cleanPath(
+                    QCoreApplication::applicationDirPath() + "/../assets/avatar/" + m_avatarFilename);
+                if (avatarPixmap.load(resourcePath) || avatarPixmap.load(filePath)) {
+                    ui->avatarLabel->setPixmap(avatarPixmap);
+                }
+            }
+
+            // Refresh profile view to show updated info
+            showProfileView();
+        }
+    });
 
     // Install event filter for Enter key
     ui->messageInput->installEventFilter(this);
@@ -172,8 +424,11 @@ ChatWindow::ChatWindow(const QString &username,
     // Configure chat display to accept HTML
     ui->chatDisplay->setAcceptRichText(true);
 
-    // Show initial profile/home view (no message input)
-    showProfileView();
+    // Configure auth client for profile updates
+    m_authClient->setServerUrl(m_serverUrl);
+
+    // Show initial home view (no message input)
+    showHomeView();
 
     // Load and display the current user's avatar in the header.
     // Try Qt resource first, then path relative to executable (e.g. build/../assets/avatar/).
@@ -378,9 +633,9 @@ void ChatWindow::updateUserList(const QJsonArray &users)
 
     qDebug() << "User list now has" << ui->userList->count() << "items";
 
-    // If we're on the profile/home view (no active chat), refresh the text
+    // If we're on the home view (no active chat), refresh the text
     if (m_currentChatTarget.isEmpty()) {
-        showProfileView();
+        showHomeView();
     }
 }
 
@@ -480,26 +735,32 @@ bool ChatWindow::eventFilter(QObject *obj, QEvent *event)
     return QWidget::eventFilter(obj, event);
 }
 
-void ChatWindow::showProfileView()
+void ChatWindow::showHomeView()
 {
-    // No active chat target in profile view
+    // No active chat target in home view
     m_currentChatTarget.clear();
 
-    // Header: show connected user (display name)
-    ui->chatWithLabel->setText("Profile: " + m_displayName);
+    // Header: generic home label
+    ui->chatWithLabel->setText("Home");
 
-    // Hide message input area (read-only profile/home screen)
+    // Update custom title bar and window title for home view
+    {
+        const QString titleText = "Wizz Mania Messenger - Home";
+        ui->titleLabel->setText(titleText);
+        setWindowTitle(titleText);
+    }
+
+    // Hide message input area (read-only home screen)
     ui->messageInput->setVisible(false);
     ui->sendButton->setVisible(false);
 
-    // Initialize content
+    // Initialize content: welcome + online users summary, but no profile details
     ui->chatDisplay->clear();
     ui->chatDisplay->append(
-        "<p style='color: #003B75; font-weight: bold;'>Welcome, "
-        + m_displayName.toHtmlEscaped() + ".</p>"
+        "<p style='color: #003B75; font-weight: bold;'>Welcome to Wizz Mania Messenger, "
+        + m_displayName.toHtmlEscaped() + "!</p>"
     );
 
-    // Build a friendly summary of connected users
     if (m_onlineUsers.isEmpty()) {
         ui->chatDisplay->append(
             "<p style='color: #666; font-style: italic;'>You are connected. "
@@ -519,12 +780,54 @@ void ChatWindow::showProfileView()
     }
 }
 
+void ChatWindow::showProfileView()
+{
+    // No active chat target in profile view
+    m_currentChatTarget.clear();
+
+    // Header: show that we're on profile for this user
+    ui->chatWithLabel->setText("Profile: " + m_displayName);
+
+    // Update custom title bar and window title for profile view
+    {
+        const QString titleText = "Wizz Mania Messenger - Profile";
+        ui->titleLabel->setText(titleText);
+        setWindowTitle(titleText);
+    }
+
+    // Hide message input area (read-only profile screen)
+    ui->messageInput->setVisible(false);
+    ui->sendButton->setVisible(false);
+
+    // Initialize content with current user's info (no server info)
+    ui->chatDisplay->clear();
+    ui->chatDisplay->append(
+        "<p style='color: #003B75; font-weight: bold;'>Your profile</p>"
+    );
+    ui->chatDisplay->append(
+        "<p style='margin-top: 8px;'><b>Username:</b> "
+        + m_username.toHtmlEscaped() + "<br>"
+        "<b>Display name:</b> " + m_displayName.toHtmlEscaped() + "<br>"
+        "<b>Avatar:</b> " + (m_avatarFilename.isEmpty()
+            ? QString("default.png").toHtmlEscaped()
+            : m_avatarFilename.toHtmlEscaped()) + "<br>"
+        "<b>Status:</b> " + m_status.toHtmlEscaped() + "</p>"
+    );
+}
+
 void ChatWindow::switchToConversation(const QString &username)
 {
     // Update current target
     m_currentChatTarget = username;
     const QString displayName = m_loginToDisplayName.value(username, username);
     ui->chatWithLabel->setText("Chat with: " + displayName);
+
+    // Update custom title bar and window title with current chat partner
+    {
+        const QString titleText = "Wizz Mania Messenger - " + displayName;
+        ui->titleLabel->setText(titleText);
+        setWindowTitle(titleText);
+    }
 
     // Ensure message input is visible in chat mode
     ui->messageInput->setVisible(true);
@@ -533,11 +836,8 @@ void ChatWindow::switchToConversation(const QString &username)
     // Clear and display messages for this conversation
     ui->chatDisplay->clear();
     
-    // If this is a new conversation, add a welcome message
-    if (!m_conversations.contains(username)) {
-        ui->chatDisplay->append("<p style='color: #0066CC; font-weight: bold;'>*** Started conversation with " + username.toHtmlEscaped() + " ***</p>");
-    } else {
-        // Display all messages for this conversation
+    // Display all messages for this conversation (if any)
+    if (m_conversations.contains(username)) {
         const QStringList &messages = m_conversations[username];
         for (const QString &msg : messages) {
             ui->chatDisplay->append(msg);

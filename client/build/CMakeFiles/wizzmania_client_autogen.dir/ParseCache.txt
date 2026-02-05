@@ -3457,11 +3457,14 @@
  mdp:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h
  mdp:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h
  mdp:/Users/melli/Code/WizzMania/client/build/wizzmania_client_autogen/moc_predefs.h
+ mdp:/Users/melli/Code/WizzMania/client/src/AuthClient.h
  mdp:/Users/melli/Code/WizzMania/client/src/ChatWindow.h
  mdp:/Users/melli/Code/WizzMania/client/src/WebSocketClient.h
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtCore.framework/Versions/A/Headers/QFlags
+ mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtCore.framework/Versions/A/Headers/QIODevice
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtCore.framework/Versions/A/Headers/QList
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtCore.framework/Versions/A/Headers/QMap
+ mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtCore.framework/Versions/A/Headers/QMetaType
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtCore.framework/Versions/A/Headers/QObject
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtCore.framework/Versions/A/Headers/QRect
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtCore.framework/Versions/A/Headers/QSharedDataPointer
@@ -3653,19 +3656,25 @@
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtGui.framework/Versions/A/Headers/qvectornd.h
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtGui.framework/Versions/A/Headers/qwindowdefs.h
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/QAbstractSocket
+ mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/QNetworkAccessManager
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/QNetworkProxy
+ mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/QNetworkReply
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/QNetworkRequest
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/QSslConfiguration
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/QSslError
+ mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/QSslPreSharedKeyAuthenticator
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/qabstractsocket.h
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/qhostaddress.h
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/qhttpheaders.h
+ mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/qnetworkaccessmanager.h
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/qnetworkproxy.h
+ mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/qnetworkreply.h
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/qnetworkrequest.h
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/qssl.h
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/qsslcertificate.h
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/qsslconfiguration.h
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/qsslerror.h
+ mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/qsslpresharedkeyauthenticator.h
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/qsslsocket.h
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/qtcpsocket.h
  mdp:/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtNetwork.framework/Versions/A/Headers/qtnetwork-config.h
