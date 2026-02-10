@@ -39,3 +39,22 @@
 
 # debug information files
 *.dwo
+
+# Build directories
+build/
+*/build/
+
+# Third-party dependencies
+third_party/
+*/third_party/
+
+# IDE
+.qtcreator
+.vscode/
+.idea/
+
+# Database
+*.db
+
+# macOS
+.DS_Store

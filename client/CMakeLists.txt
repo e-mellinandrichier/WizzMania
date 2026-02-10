@@ -37,7 +37,7 @@ set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/ui)
 
 qt6_add_executable(wizzmania_client ${SOURCES} ${HEADERS} ${UI_FILES})
 
-qt6_add_resources(wizzmania_client RESOURCES ${RESOURCE_FILES})
+qt6_add_resources(wizzmania_client RESOURCES ${RESOURCE_FILES} PREFIX "/")
 
 # Add include directory for generated UI headers
 target_include_directories(wizzmania_client PRIVATE
