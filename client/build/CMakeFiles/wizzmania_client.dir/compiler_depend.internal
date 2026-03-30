@@ -899,6 +899,7 @@
  /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtCore.framework/Versions/A/Headers/qversiontagging.h
  /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtCore.framework/Versions/A/Headers/qxptype_traits.h
  /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtCore.framework/Versions/A/Headers/qyieldcpu.h
+ /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtGui.framework/Versions/A/Headers/QColor
  /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtGui.framework/Versions/A/Headers/QMouseEvent
  /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtGui.framework/Versions/A/Headers/QTransform
  /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtGui.framework/Versions/A/Headers/qaction.h
@@ -2246,6 +2247,7 @@ CMakeFiles/wizzmania_client.dir/main.cpp.o
  /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qversiontagging.h
  /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qxptype_traits.h
  /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qyieldcpu.h
+ /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QColor
  /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QFont
  /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QMouseEvent
  /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QTransform
@@ -4415,6 +4417,8 @@ CMakeFiles/wizzmania_client.dir/src/ChatWindow.cpp.o
  /opt/homebrew/opt/qt/lib/QtWebSockets.framework/Headers/qwebsocketprotocol.h
  /opt/homebrew/opt/qt/lib/QtWebSockets.framework/Headers/qwebsockets_global.h
  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QApplication
+ /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QColorDialog
+ /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QComboBox
  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QDialog
  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QDialogButtonBox
  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QFormLayout
@@ -4437,6 +4441,8 @@ CMakeFiles/wizzmania_client.dir/src/ChatWindow.cpp.o
  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qabstractspinbox.h
  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qapplication.h
  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qboxlayout.h
+ /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qcolordialog.h
+ /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qcombobox.h
  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qdialog.h
  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qdialogbuttonbox.h
  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qformlayout.h
@@ -7506,6 +7512,7 @@ CMakeFiles/wizzmania_client.dir/wizzmania_client_autogen/mocs_compilation.cpp.o
  /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qversiontagging.h
  /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qxptype_traits.h
  /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qyieldcpu.h
+ /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QColor
  /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QMouseEvent
  /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QTransform
  /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/qaction.h

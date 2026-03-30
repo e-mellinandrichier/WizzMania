@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 #include <QMap>
 #include <QStringList>
+#include <QColor>
 #include "WebSocketClient.h"
 #include "AuthClient.h"
 
@@ -41,16 +42,22 @@ private slots:
 
 private:
     void sendIdentify();
-    void sendPrivateMessage(const QString &to, const QString &text);
+    void sendPrivateMessage(const QString &to, const QString &text, const QColor &color, int fontSizePx);
+    void sendWizz(const QString &to);
     void updateUserList(const QJsonArray &users);
     void handleServerMessage(const QJsonObject &json);
     void showHomeView();
     void showProfileView();
     void switchToConversation(const QString &username);
-    void addMessageToConversation(const QString &from, const QString &message, bool isFromMe = false);
+    void addMessageToConversation(const QString &from,
+                                  const QString &message,
+                                  bool isFromMe = false,
+                                  const QColor &color = QColor(),
+                                  int fontSizePx = 0);
     void loadAvatar(const QString &filename);
     QString emojiImageTag(const QString &filename) const;
     QString applyEmojiShortcuts(const QString &text, const QString &username, bool isFromMe) const;
+    void triggerWizz();
 
     Ui::ChatWindow *ui;
     QString m_username;
@@ -64,6 +71,8 @@ private:
     bool m_dragging;
     QString m_currentChatTarget;
     bool m_identified;
+    QColor m_myTextColor;
+    int m_myFontSizePx;
     // Store messages per conversation: username (login) -> list of HTML messages
     QMap<QString, QStringList> m_conversations;
     // Map login -> display name, avatar filename, and status

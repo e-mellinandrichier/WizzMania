@@ -22,6 +22,10 @@
 #include <QListWidget>
 #include <QLabel>
 #include <QPushButton>
+#include <QComboBox>
+#include <QColorDialog>
+#include <QPropertyAnimation>
+#include <QApplication>
 
 ChatWindow::ChatWindow(const QString &username,
                        const QString &displayName,
@@ -38,6 +42,8 @@ ChatWindow::ChatWindow(const QString &username,
     , m_serverUrl(serverUrl)
     , m_webSocketClient(new WebSocketClient(this))
     , m_authClient(new AuthClient(this))
+    , m_myTextColor(Qt::black)
+    , m_myFontSizePx(12)
     , m_dragging(false)
     , m_identified(false)
     , m_conversations()
@@ -290,6 +296,21 @@ ChatWindow::ChatWindow(const QString &username,
         dialog.exec();
     });
 
+    // Wizz button
+    connect(ui->wizzButton, &QPushButton::clicked, this, [this]() {
+        if (!m_webSocketClient->isConnected() || !m_identified) {
+            ui->statusLabel->setText("Not connected or not identified!");
+            return;
+        }
+        if (m_currentChatTarget.isEmpty()) {
+            ui->statusLabel->setText("Select a user first");
+            return;
+        }
+        sendWizz(m_currentChatTarget);
+        ui->chatDisplay->append("<p style='color:#666; font-style: italic;'><b>(Wizz)</b> You sent a wizz.</p>");
+        triggerWizz();
+    });
+
     // Home button: return to vintage home view
     connect(ui->homeButton, &QPushButton::clicked, this, [this]() {
         showHomeView();
@@ -526,6 +547,33 @@ ChatWindow::ChatWindow(const QString &username,
         QCoreApplication::applicationDirPath() + "/../assets/emojis");
     ui->chatDisplay->document()->setBaseUrl(QUrl::fromLocalFile(emojisDirPath + "/"));
 
+    // Initialize font size dropdown
+    ui->fontSizeCombo->addItems({"10", "11", "12", "14", "16", "18", "20"});
+    ui->fontSizeCombo->setCurrentText(QString::number(m_myFontSizePx));
+    connect(ui->fontSizeCombo, &QComboBox::currentTextChanged, this, [this](const QString &t) {
+        bool ok = false;
+        int px = t.toInt(&ok);
+        if (ok && px >= 8 && px <= 48) {
+            m_myFontSizePx = px;
+        }
+    });
+
+    // Text color button
+    connect(ui->textColorButton, &QPushButton::clicked, this, [this]() {
+        QColor chosen = QColorDialog::getColor(m_myTextColor, this, "Choose text color");
+        if (!chosen.isValid()) return;
+        m_myTextColor = chosen;
+        ui->textColorButton->setStyleSheet(
+            ui->textColorButton->styleSheet() +
+            QString("QPushButton#textColorButton { color: %1; }").arg(m_myTextColor.name())
+        );
+    });
+
+    // Style Wizz button like Send
+    QString wizzButtonStyle = sendButtonStyle;
+    wizzButtonStyle.replace("QPushButton#sendButton", "QPushButton#wizzButton");
+    ui->wizzButton->setStyleSheet(wizzButtonStyle);
+
     // Configure auth client for profile updates
     m_authClient->setServerUrl(m_serverUrl);
 
@@ -616,11 +664,11 @@ void ChatWindow::onSendClicked()
     }
 
     // Send private message
-    sendPrivateMessage(m_currentChatTarget, message);
+    sendPrivateMessage(m_currentChatTarget, message, m_myTextColor, m_myFontSizePx);
     ui->messageInput->clear();
     
     // Add sent message to conversation
-    addMessageToConversation(m_currentChatTarget, message, true);
+    addMessageToConversation(m_currentChatTarget, message, true, m_myTextColor, m_myFontSizePx);
 }
 
 void ChatWindow::onMessageReceived(const QString &message)
@@ -675,16 +723,34 @@ void ChatWindow::sendIdentify()
     m_webSocketClient->sendMessage(jsonStr);
 }
 
-void ChatWindow::sendPrivateMessage(const QString &to, const QString &text)
+void ChatWindow::sendPrivateMessage(const QString &to, const QString &text, const QColor &color, int fontSizePx)
 {
     QJsonObject msg;
     msg["type"] = "private_msg";
     msg["to"] = to;
     msg["text"] = text;
+    if (color.isValid()) {
+        msg["color"] = color.name(QColor::HexRgb);
+    }
+    if (fontSizePx > 0) {
+        msg["size"] = fontSizePx;
+    }
     
     QJsonDocument doc(msg);
     QString jsonStr = doc.toJson(QJsonDocument::Compact);
     qDebug() << "[CLIENT] Sending private message:" << jsonStr;
+    m_webSocketClient->sendMessage(jsonStr);
+}
+
+void ChatWindow::sendWizz(const QString &to)
+{
+    QJsonObject msg;
+    msg["type"] = "wizz";
+    msg["to"] = to;
+
+    QJsonDocument doc(msg);
+    QString jsonStr = doc.toJson(QJsonDocument::Compact);
+    qDebug() << "[CLIENT] Sending wizz:" << jsonStr;
     m_webSocketClient->sendMessage(jsonStr);
 }
 
@@ -737,6 +803,12 @@ void ChatWindow::updateUserList(const QJsonArray &users)
     // If we're on the home view (no active chat), refresh the text
     if (m_currentChatTarget.isEmpty()) {
         showHomeView();
+    } else {
+        // If we're in a conversation, refresh header/avatar in case the user's profile changed
+        const QString displayName = m_loginToDisplayName.value(m_currentChatTarget, m_currentChatTarget);
+        ui->chatWithLabel->setText("Chat with: " + displayName);
+        const QString partnerAvatar = m_loginToAvatar.value(m_currentChatTarget, QStringLiteral("default.png"));
+        loadAvatar(partnerAvatar);
     }
 }
 
@@ -758,9 +830,17 @@ void ChatWindow::handleServerMessage(const QJsonObject &json)
     else if (type == "private_msg") {
         QString from = json["from"].toString();
         QString text = json["text"].toString();
+        QColor color;
+        int sizePx = 0;
+        if (json.contains("color")) {
+            color = QColor(json["color"].toString());
+        }
+        if (json.contains("size")) {
+            sizePx = json["size"].toInt();
+        }
         
         // Add message to the conversation with this user
-        addMessageToConversation(from, text, false);
+        addMessageToConversation(from, text, false, color, sizePx);
         
         // If this is NOT from the current chat target, highlight the user in the list
         // but don't switch conversations automatically
@@ -780,6 +860,15 @@ void ChatWindow::handleServerMessage(const QJsonObject &json)
                 }
             }
         }
+    }
+    else if (type == "wizz") {
+        QString from = json["from"].toString();
+        QString displayName = m_loginToDisplayName.value(from, from);
+        ui->chatDisplay->append(
+            "<p style='color:#666; font-style: italic;'><b>(Wizz)</b> "
+            + displayName.toHtmlEscaped() + " sent you a wizz.</p>"
+        );
+        triggerWizz();
     }
     else if (type == "error") {
         QString errorMsg = json["message"].toString();
@@ -834,6 +923,32 @@ bool ChatWindow::eventFilter(QObject *obj, QEvent *event)
         }
     }
     return QWidget::eventFilter(obj, event);
+}
+
+void ChatWindow::triggerWizz()
+{
+    // Classic MSN-ish: shake window and beep
+    QApplication::beep();
+
+    const QPoint basePos = pos();
+    const int amplitude = 10;
+    const int shakes = 12;
+    const int durationMs = 350;
+
+    QPropertyAnimation *anim = new QPropertyAnimation(this, "pos");
+    anim->setDuration(durationMs);
+    anim->setLoopCount(1);
+
+    for (int i = 0; i <= shakes; ++i) {
+        const qreal t = static_cast<qreal>(i) / shakes;
+        int dx = (i % 2 == 0) ? amplitude : -amplitude;
+        int dy = ((i / 2) % 2 == 0) ? amplitude / 2 : -amplitude / 2;
+        anim->setKeyValueAt(t, basePos + QPoint(dx, dy));
+    }
+    anim->setKeyValueAt(1.0, basePos);
+
+    connect(anim, &QPropertyAnimation::finished, anim, &QObject::deleteLater);
+    anim->start();
 }
 
 void ChatWindow::loadAvatar(const QString &filename)
@@ -951,6 +1066,9 @@ void ChatWindow::showHomeView()
     ui->messageInput->setVisible(false);
     ui->sendButton->setVisible(false);
     ui->emojiButton->setVisible(false);
+    ui->fontSizeCombo->setVisible(false);
+    ui->textColorButton->setVisible(false);
+    ui->wizzButton->setVisible(false);
 
     // Show current user's avatar in home view
     loadAvatar(m_avatarFilename);
@@ -996,6 +1114,9 @@ void ChatWindow::showProfileView()
     ui->messageInput->setVisible(false);
     ui->sendButton->setVisible(false);
     ui->emojiButton->setVisible(false);
+    ui->fontSizeCombo->setVisible(false);
+    ui->textColorButton->setVisible(false);
+    ui->wizzButton->setVisible(false);
 
     // Show current user's avatar in profile view
     loadAvatar(m_avatarFilename);
@@ -1056,6 +1177,9 @@ void ChatWindow::switchToConversation(const QString &username)
     ui->messageInput->setVisible(true);
     ui->sendButton->setVisible(true);
     ui->emojiButton->setVisible(true);
+    ui->fontSizeCombo->setVisible(true);
+    ui->textColorButton->setVisible(true);
+    ui->wizzButton->setVisible(true);
     
     // Clear and display messages for this conversation
     ui->chatDisplay->clear();
@@ -1084,9 +1208,25 @@ void ChatWindow::switchToConversation(const QString &username)
     }
 }
 
-void ChatWindow::addMessageToConversation(const QString &username, const QString &text, bool isFromMe)
+void ChatWindow::addMessageToConversation(const QString &username,
+                                         const QString &text,
+                                         bool isFromMe,
+                                         const QColor &color,
+                                         int fontSizePx)
 {
     QString htmlMessage;
+    QString style;
+    if (color.isValid()) {
+        style += QString("color:%1;").arg(color.name(QColor::HexRgb));
+    }
+    if (fontSizePx > 0) {
+        style += QString("font-size:%1px;").arg(fontSizePx);
+    }
+    const QString bodyHtmlRaw = applyEmojiShortcuts(text, username, isFromMe);
+    const QString bodyHtml = style.isEmpty()
+        ? bodyHtmlRaw
+        : QString("<span style=\"%1\">%2</span>").arg(style, bodyHtmlRaw);
+
     if (isFromMe) {
         QString statusText = m_status.trimmed();
         QString nameLabel = m_displayName.toHtmlEscaped();
@@ -1094,7 +1234,6 @@ void ChatWindow::addMessageToConversation(const QString &username, const QString
             nameLabel += " (" + statusText.toHtmlEscaped() + ")";
         }
         QString prefix = QString("(%1) dit :").arg(nameLabel);
-        QString bodyHtml = applyEmojiShortcuts(text, username, true);
         htmlMessage = QString("<p><b style='color: #0066CC;'>%1</b> %2</p>")
                       .arg(prefix)
                       .arg(bodyHtml);
@@ -1106,7 +1245,6 @@ void ChatWindow::addMessageToConversation(const QString &username, const QString
             nameLabel += " (" + statusText.toHtmlEscaped() + ")";
         }
         QString prefix = QString("(%1) dit :").arg(nameLabel);
-        QString bodyHtml = applyEmojiShortcuts(text, username, false);
         htmlMessage = QString("<p><b style='color: #CC0066;'>%1</b> %2</p>")
                       .arg(prefix)
                       .arg(bodyHtml);

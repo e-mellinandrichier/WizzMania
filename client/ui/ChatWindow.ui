@@ -449,6 +449,74 @@ QListWidget::item:hover {
                </widget>
               </item>
               <item>
+               <widget class="QComboBox" name="fontSizeCombo">
+                <property name="minimumSize">
+                 <size>
+                  <width>58</width>
+                  <height>24</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>58</width>
+                  <height>24</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>Font size</string>
+                </property>
+                <property name="styleSheet">
+                 <string>QComboBox#fontSizeCombo {
+    border: 1px solid #7F9DB9;
+    background-color: #FFFFFF;
+    font-size: 11px;
+    padding: 1px 4px;
+}
+QComboBox#fontSizeCombo::drop-down {
+    border-left: 1px solid #7F9DB9;
+    width: 16px;
+}
+QComboBox#fontSizeCombo:hover {
+    background-color: #F5FAFF;
+}</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="textColorButton">
+                <property name="minimumSize">
+                 <size>
+                  <width>24</width>
+                  <height>24</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>24</width>
+                  <height>24</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>A</string>
+                </property>
+                <property name="toolTip">
+                 <string>Text color</string>
+                </property>
+                <property name="styleSheet">
+                 <string>QPushButton#textColorButton {
+    border: 1px solid #7F9DB9;
+    background-color: #E3EBF6;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 0;
+}
+QPushButton#textColorButton:hover {
+    background-color: #F5FAFF;
+}</string>
+                </property>
+               </widget>
+              </item>
+              <item>
                <widget class="QPushButton" name="emojiButton">
                 <property name="minimumSize">
                  <size>
@@ -478,6 +546,31 @@ QListWidget::item:hover {
 QPushButton#emojiButton:hover {
     background-color: #F5FAFF;
 }</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="wizzButton">
+                <property name="minimumSize">
+                 <size>
+                  <width>44</width>
+                  <height>24</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>44</width>
+                  <height>24</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Wizz</string>
+                </property>
+                <property name="toolTip">
+                 <string>Send a Wizz</string>
+                </property>
+                <property name="styleSheet">
+                 <string>font-weight: bold;</string>
                 </property>
                </widget>
               </item>

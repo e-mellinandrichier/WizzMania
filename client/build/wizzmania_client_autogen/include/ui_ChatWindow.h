@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -54,7 +55,10 @@ public:
     QTextEdit *chatDisplay;
     QHBoxLayout *inputLayout;
     QLineEdit *messageInput;
+    QComboBox *fontSizeCombo;
+    QPushButton *textColorButton;
     QPushButton *emojiButton;
+    QPushButton *wizzButton;
     QPushButton *sendButton;
     QWidget *rightSideRail;
     QLabel *statusLabel;
@@ -206,12 +210,33 @@ public:
 
         inputLayout->addWidget(messageInput);
 
+        fontSizeCombo = new QComboBox(chatAreaWidget);
+        fontSizeCombo->setObjectName("fontSizeCombo");
+        fontSizeCombo->setMinimumSize(QSize(58, 24));
+        fontSizeCombo->setMaximumSize(QSize(58, 24));
+
+        inputLayout->addWidget(fontSizeCombo);
+
+        textColorButton = new QPushButton(chatAreaWidget);
+        textColorButton->setObjectName("textColorButton");
+        textColorButton->setMinimumSize(QSize(24, 24));
+        textColorButton->setMaximumSize(QSize(24, 24));
+
+        inputLayout->addWidget(textColorButton);
+
         emojiButton = new QPushButton(chatAreaWidget);
         emojiButton->setObjectName("emojiButton");
         emojiButton->setMinimumSize(QSize(24, 24));
         emojiButton->setMaximumSize(QSize(24, 24));
 
         inputLayout->addWidget(emojiButton);
+
+        wizzButton = new QPushButton(chatAreaWidget);
+        wizzButton->setObjectName("wizzButton");
+        wizzButton->setMinimumSize(QSize(44, 24));
+        wizzButton->setMaximumSize(QSize(44, 24));
+
+        inputLayout->addWidget(wizzButton);
 
         sendButton = new QPushButton(chatAreaWidget);
         sendButton->setObjectName("sendButton");
@@ -324,6 +349,36 @@ public:
         chatDisplay->setStyleSheet(QCoreApplication::translate("ChatWindow", "border: 1px solid #7F9DB9; padding: 5px; font-family: Tahoma, Arial, sans-serif; font-size: 12px;", nullptr));
         messageInput->setPlaceholderText(QCoreApplication::translate("ChatWindow", "Type your message...", nullptr));
         messageInput->setStyleSheet(QCoreApplication::translate("ChatWindow", "border: 1px solid #7F9DB9; padding: 2px 5px; font-family: Tahoma, Arial, sans-serif; font-size: 12px;", nullptr));
+#if QT_CONFIG(tooltip)
+        fontSizeCombo->setToolTip(QCoreApplication::translate("ChatWindow", "Font size", nullptr));
+#endif // QT_CONFIG(tooltip)
+        fontSizeCombo->setStyleSheet(QCoreApplication::translate("ChatWindow", "QComboBox#fontSizeCombo {\n"
+"    border: 1px solid #7F9DB9;\n"
+"    background-color: #FFFFFF;\n"
+"    font-size: 11px;\n"
+"    padding: 1px 4px;\n"
+"}\n"
+"QComboBox#fontSizeCombo::drop-down {\n"
+"    border-left: 1px solid #7F9DB9;\n"
+"    width: 16px;\n"
+"}\n"
+"QComboBox#fontSizeCombo:hover {\n"
+"    background-color: #F5FAFF;\n"
+"}", nullptr));
+        textColorButton->setText(QCoreApplication::translate("ChatWindow", "A", nullptr));
+#if QT_CONFIG(tooltip)
+        textColorButton->setToolTip(QCoreApplication::translate("ChatWindow", "Text color", nullptr));
+#endif // QT_CONFIG(tooltip)
+        textColorButton->setStyleSheet(QCoreApplication::translate("ChatWindow", "QPushButton#textColorButton {\n"
+"    border: 1px solid #7F9DB9;\n"
+"    background-color: #E3EBF6;\n"
+"    font-size: 12px;\n"
+"    font-weight: bold;\n"
+"    padding: 0;\n"
+"}\n"
+"QPushButton#textColorButton:hover {\n"
+"    background-color: #F5FAFF;\n"
+"}", nullptr));
         emojiButton->setText(QCoreApplication::translate("ChatWindow", "\342\230\272", nullptr));
 #if QT_CONFIG(tooltip)
         emojiButton->setToolTip(QCoreApplication::translate("ChatWindow", "Insert emoticon", nullptr));
@@ -337,6 +392,11 @@ public:
 "QPushButton#emojiButton:hover {\n"
 "    background-color: #F5FAFF;\n"
 "}", nullptr));
+        wizzButton->setText(QCoreApplication::translate("ChatWindow", "Wizz", nullptr));
+#if QT_CONFIG(tooltip)
+        wizzButton->setToolTip(QCoreApplication::translate("ChatWindow", "Send a Wizz", nullptr));
+#endif // QT_CONFIG(tooltip)
+        wizzButton->setStyleSheet(QCoreApplication::translate("ChatWindow", "font-weight: bold;", nullptr));
         sendButton->setText(QCoreApplication::translate("ChatWindow", "Send", nullptr));
         sendButton->setStyleSheet(QCoreApplication::translate("ChatWindow", "font-weight: bold;", nullptr));
         rightSideRail->setStyleSheet(QCoreApplication::translate("ChatWindow", "background: qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"

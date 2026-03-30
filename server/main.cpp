@@ -261,93 +261,6 @@ int main() {
             }
         });
 
-    // Authentication: Update profile (name, picture, status)
-    // POST /auth/update
-    // Body (JSON): {
-    //   "username": "alice",
-    //   "name": "New Name",
-    //   "picture": "NewAvatar.png",
-    //   "status": "New status"
-    // }
-    // Returns: {"success": true} or error
-    CROW_ROUTE(app, "/auth/update")
-        .methods("POST"_method)
-        ([&](const crow::request& req) {
-            try {
-                auto json = crow::json::load(req.body);
-                if (!json || !json.has("username")) {
-                    crow::response res(400);
-                    res.body = R"({"success": false, "error": "Missing username"})";
-                    res.set_header("Content-Type", "application/json");
-                    return res;
-                }
-
-                std::string username = json["username"].s();
-
-                std::string name;
-                if (json.has("name")) {
-                    name = json["name"].s();
-                }
-
-                std::string picture;
-                if (json.has("picture")) {
-                    picture = json["picture"].s();
-                }
-
-                std::string status;
-                if (json.has("status")) {
-                    status = json["status"].s();
-                }
-
-                std::lock_guard<std::mutex> lock(auth_mutex);
-
-                sqlite3_stmt* stmt = nullptr;
-                const char* sql =
-                    "UPDATE users SET name = ?, picture = ?, status = ? WHERE login = ?;";
-
-                if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
-                    crow::response res(500);
-                    res.body = R"({"success": false, "error": "Failed to prepare statement"})";
-                    res.set_header("Content-Type", "application/json");
-                    return res;
-                }
-
-                sqlite3_bind_text(stmt, 1, name.c_str(),    -1, SQLITE_TRANSIENT);
-                sqlite3_bind_text(stmt, 2, picture.c_str(), -1, SQLITE_TRANSIENT);
-                sqlite3_bind_text(stmt, 3, status.c_str(),  -1, SQLITE_TRANSIENT);
-                sqlite3_bind_text(stmt, 4, username.c_str(),-1, SQLITE_TRANSIENT);
-
-                int rc = sqlite3_step(stmt);
-                sqlite3_finalize(stmt);
-
-                if (rc != SQLITE_DONE) {
-                    crow::response res(500);
-                    res.body = R"({"success": false, "error": "Failed to update user"})";
-                    res.set_header("Content-Type", "application/json");
-                    return res;
-                }
-
-                // Check that at least one row was updated
-                if (sqlite3_changes(db) == 0) {
-                    crow::response res(404);
-                    res.body = R"({"success": false, "error": "User not found"})";
-                    res.set_header("Content-Type", "application/json");
-                    return res;
-                }
-
-                crow::response res(200);
-                res.body = R"({"success": true})";
-                res.set_header("Content-Type", "application/json");
-                return res;
-            }
-            catch (...) {
-                crow::response res(500);
-                res.body = R"({"success": false, "error": "Internal server error"})";
-                res.set_header("Content-Type", "application/json");
-                return res;
-            }
-        });
-
     // Get list of all registered users
     // GET /auth/users
     // Returns: {"success": true, "users": [{"login": "...", "name": "..."}, ...]} or error
@@ -466,6 +379,100 @@ int main() {
             }
         }
     };
+
+    // Authentication: Update profile (name, picture, status)
+    // POST /auth/update
+    // Body (JSON): {
+    //   "username": "alice",
+    //   "name": "New Name",
+    //   "picture": "NewAvatar.png",
+    //   "status": "New status"
+    // }
+    // Returns: {"success": true} or error
+    CROW_ROUTE(app, "/auth/update")
+        .methods("POST"_method)
+        ([&](const crow::request& req) {
+            try {
+                auto json = crow::json::load(req.body);
+                if (!json || !json.has("username")) {
+                    crow::response res(400);
+                    res.body = R"({"success": false, "error": "Missing username"})";
+                    res.set_header("Content-Type", "application/json");
+                    return res;
+                }
+
+                std::string username = json["username"].s();
+
+                std::string name;
+                if (json.has("name")) {
+                    name = json["name"].s();
+                }
+
+                std::string picture;
+                if (json.has("picture")) {
+                    picture = json["picture"].s();
+                }
+
+                std::string status;
+                if (json.has("status")) {
+                    status = json["status"].s();
+                }
+
+                {
+                    std::lock_guard<std::mutex> lock(auth_mutex);
+
+                    sqlite3_stmt* stmt = nullptr;
+                    const char* sql =
+                        "UPDATE users SET name = ?, picture = ?, status = ? WHERE login = ?;";
+
+                    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+                        crow::response res(500);
+                        res.body = R"({"success": false, "error": "Failed to prepare statement"})";
+                        res.set_header("Content-Type", "application/json");
+                        return res;
+                    }
+
+                    sqlite3_bind_text(stmt, 1, name.c_str(),    -1, SQLITE_TRANSIENT);
+                    sqlite3_bind_text(stmt, 2, picture.c_str(), -1, SQLITE_TRANSIENT);
+                    sqlite3_bind_text(stmt, 3, status.c_str(),  -1, SQLITE_TRANSIENT);
+                    sqlite3_bind_text(stmt, 4, username.c_str(),-1, SQLITE_TRANSIENT);
+
+                    int rc = sqlite3_step(stmt);
+                    sqlite3_finalize(stmt);
+
+                    if (rc != SQLITE_DONE) {
+                        crow::response res(500);
+                        res.body = R"({"success": false, "error": "Failed to update user"})";
+                        res.set_header("Content-Type", "application/json");
+                        return res;
+                    }
+
+                    if (sqlite3_changes(db) == 0) {
+                        crow::response res(404);
+                        res.body = R"({"success": false, "error": "User not found"})";
+                        res.set_header("Content-Type", "application/json");
+                        return res;
+                    }
+                }
+
+                // Broadcast updated user list to connected clients
+                {
+                    std::lock_guard<std::mutex> lock(connections_mutex);
+                    broadcast_user_list();
+                }
+
+                crow::response res(200);
+                res.body = R"({"success": true})";
+                res.set_header("Content-Type", "application/json");
+                return res;
+            }
+            catch (...) {
+                crow::response res(500);
+                res.body = R"({"success": false, "error": "Internal server error"})";
+                res.set_header("Content-Type", "application/json");
+                return res;
+            }
+        });
 
     // Basic WebSocket chat endpoint with private messaging support
     //
@@ -596,6 +603,14 @@ int main() {
                     }
                     std::string to_username = json["to"].s();
                     std::string text = json["text"].s();
+                    std::string color;
+                    int size = 0;
+                    if (json.has("color")) {
+                        color = json["color"].s();
+                    }
+                    if (json.has("size")) {
+                        size = json["size"].i();
+                    }
                     std::cout << "[SERVER] Private message from " << from_username << " to " << to_username << ": " << text << std::endl;
                     
                     // Find target user's connection
@@ -615,7 +630,14 @@ int main() {
                         }
                         
                         std::string msg_str = R"({"type": "private_msg", "from": ")" + from_username + 
-                                             R"(", "text": ")" + escaped_text + R"("})";
+                                             R"(", "text": ")" + escaped_text + R"(")";
+                        if (!color.empty()) {
+                            msg_str += R"(, "color": ")" + color + R"(")";
+                        }
+                        if (size > 0) {
+                            msg_str += R"(, "size": )" + std::to_string(size);
+                        }
+                        msg_str += "}";
                         std::cout << "[SERVER] Sending private message: " << msg_str << std::endl;
                         target_it->second->send_text(msg_str);
                         
@@ -625,6 +647,26 @@ int main() {
                     } else {
                         // User not found
                         std::cout << "[SERVER] User not found: " << to_username << std::endl;
+                        std::string error = R"({"type": "error", "message": "User not found or offline"})";
+                        conn.send_text(error);
+                    }
+                    return;
+                }
+
+                // Handle wizz
+                if (msg_type == "wizz") {
+                    if (!json.has("to")) {
+                        std::cout << "[SERVER] Wizz missing 'to' field" << std::endl;
+                        return;
+                    }
+                    std::string to_username = json["to"].s();
+                    std::cout << "[SERVER] Wizz from " << from_username << " to " << to_username << std::endl;
+
+                    auto target_it = user_to_connection.find(to_username);
+                    if (target_it != user_to_connection.end() && target_it->second) {
+                        std::string msg_str = R"({"type": "wizz", "from": ")" + from_username + R"("})";
+                        target_it->second->send_text(msg_str);
+                    } else {
                         std::string error = R"({"type": "error", "message": "User not found or offline"})";
                         conn.send_text(error);
                     }

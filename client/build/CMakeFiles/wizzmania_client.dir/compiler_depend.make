@@ -898,6 +898,7 @@ wizzmania_client_autogen/timestamp: /Applications/Xcode.app/Contents/Developer/P
   /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtCore.framework/Versions/A/Headers/qversiontagging.h \
   /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtCore.framework/Versions/A/Headers/qxptype_traits.h \
   /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtCore.framework/Versions/A/Headers/qyieldcpu.h \
+  /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtGui.framework/Versions/A/Headers/QColor \
   /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtGui.framework/Versions/A/Headers/QMouseEvent \
   /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtGui.framework/Versions/A/Headers/QTransform \
   /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtGui.framework/Versions/A/Headers/qaction.h \
@@ -2244,6 +2245,7 @@ CMakeFiles/wizzmania_client.dir/main.cpp.o: /Users/melli/Code/WizzMania/client/m
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qversiontagging.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qxptype_traits.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qyieldcpu.h \
+  /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QColor \
   /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QFont \
   /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QMouseEvent \
   /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QTransform \
@@ -4411,6 +4413,8 @@ CMakeFiles/wizzmania_client.dir/src/ChatWindow.cpp.o: /Users/melli/Code/WizzMani
   /opt/homebrew/opt/qt/lib/QtWebSockets.framework/Headers/qwebsocketprotocol.h \
   /opt/homebrew/opt/qt/lib/QtWebSockets.framework/Headers/qwebsockets_global.h \
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QApplication \
+  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QColorDialog \
+  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QComboBox \
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QDialog \
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QDialogButtonBox \
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QFormLayout \
@@ -4433,6 +4437,8 @@ CMakeFiles/wizzmania_client.dir/src/ChatWindow.cpp.o: /Users/melli/Code/WizzMani
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qabstractspinbox.h \
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qapplication.h \
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qboxlayout.h \
+  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qcolordialog.h \
+  /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qcombobox.h \
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qdialog.h \
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qdialogbuttonbox.h \
   /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qformlayout.h \
@@ -7499,6 +7505,7 @@ CMakeFiles/wizzmania_client.dir/wizzmania_client_autogen/mocs_compilation.cpp.o:
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qversiontagging.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qxptype_traits.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qyieldcpu.h \
+  /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QColor \
   /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QMouseEvent \
   /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QTransform \
   /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/qaction.h \
@@ -7611,6 +7618,10 @@ wizzmania_client_autogen/include/ui_LoginWindow.h:
 
 /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qdialog.h:
 
+/opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qcombobox.h:
+
+/opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qcolordialog.h:
+
 /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qboxlayout.h:
 
 /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/qabstractslider.h:
@@ -7635,6 +7646,8 @@ wizzmania_client_autogen/include/ui_LoginWindow.h:
 
 /opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QDialog:
 
+/opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QComboBox:
+
 /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/qvalidator.h:
 
 /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/qtextoption.h:
@@ -7642,8 +7655,6 @@ wizzmania_client_autogen/include/ui_LoginWindow.h:
 /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/qpicture.h:
 
 /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QKeyEvent:
-
-/opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QColor:
 
 /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qtimer.h:
 
@@ -7718,6 +7729,8 @@ wizzmania_client_autogen/include/ui_ChatWindow.h:
 /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qjsonvalue.h:
 
 /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qjsonparseerror.h:
+
+/opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qjsonobject.h:
 
 /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qjsondocument.h:
 
@@ -8495,8 +8508,6 @@ wizzmania_client_autogen/UVLADIE3JM/moc_LoginWindow.cpp:
 
 /opt/homebrew/opt/qt/lib/cmake/Qt6Gui/Qt6QICNSPluginConfig.cmake:
 
-/opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qjsonobject.h:
-
 /opt/homebrew/opt/qt/lib/cmake/Qt6Gui/Qt6QICNSPluginAdditionalTargetInfo.cmake:
 
 /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtCore.framework/Versions/A/Headers/qpair.h:
@@ -8634,6 +8645,8 @@ wizzmania_client_autogen/UVLADIE3JM/moc_LoginWindow.cpp:
 /opt/homebrew/opt/qt/lib/cmake/Qt6Core/Qt6QDarwinBluetoothPermissionPluginConfig.cmake:
 
 /opt/homebrew/opt/qt/lib/cmake/Qt6Core/Qt6QDarwinBluetoothPermissionPluginAdditionalTargetInfo.cmake:
+
+/opt/homebrew/opt/qt/lib/QtWidgets.framework/Headers/QColorDialog:
 
 /opt/homebrew/opt/qt/lib/cmake/Qt6Core/Qt6CoreVersionlessAliasTargets.cmake:
 
@@ -8860,6 +8873,8 @@ wizzmania_client_autogen/UVLADIE3JM/moc_LoginWindow.cpp:
 /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtGui.framework/Versions/A/Headers/qaction.h:
 
 /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtGui.framework/Versions/A/Headers/QTransform:
+
+/opt/homebrew/Cellar/qtbase/6.10.1/lib/QtGui.framework/Versions/A/Headers/QColor:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/nat.h:
 
@@ -9982,6 +9997,8 @@ CMakeFiles/4.1.2/CMakeCXXCompiler.cmake:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/compare:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/execution:
+
+/opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QColor:
 
 /opt/homebrew/opt/qt/lib/cmake/Qt6CoreTools/Qt6CoreToolsConfigVersionImpl.cmake:
 
