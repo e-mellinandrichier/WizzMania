@@ -72,6 +72,9 @@ ChatWindow::ChatWindow(const QString &username,
         "        stop:0.3 #5A8BB7,"
         "        stop:0.7 #4A7BA7,"
         "        stop:1 #3A6B97);"
+        "    border-left: 10px solid #1AA7FF;"
+        "    border-right: 10px solid #1AA7FF;"
+        "    border-radius: 10px;"
         "}"
         "QWidget#titleBar {"
         "    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
@@ -187,6 +190,110 @@ ChatWindow::ChatWindow(const QString &username,
     // Connect title bar buttons
     connect(ui->closeButton, &QPushButton::clicked, this, &QWidget::close);
     connect(ui->minimizeButton, &QPushButton::clicked, this, &QWidget::showMinimized);
+
+    // Emoji button: open simple emoji picker (only emojis defined in applyEmojiShortcuts)
+    connect(ui->emojiButton, &QPushButton::clicked, this, [this]() {
+        QDialog dialog(this);
+        dialog.setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+        dialog.setModal(true);
+
+        QVBoxLayout *layout = new QVBoxLayout(&dialog);
+        layout->setContentsMargins(4, 4, 4, 4);
+        layout->setSpacing(4);
+
+        QGridLayout *grid = new QGridLayout();
+        grid->setSpacing(2);
+
+        QString emojisDirPath = QDir::cleanPath(
+            QCoreApplication::applicationDirPath() + "/../assets/emojis");
+
+        // Keep emoji list in sync with applyEmojiShortcuts
+        static const QList<QPair<QString, QString>> shortcutToFile = {
+            {":D",   "teeth_smile.png"},
+            {";)",   "03.png"},
+            {":)",   "001.png"},
+            {":-O",  "omg_smile.png"},
+            {":P",   "tongue_smile.png"},
+            {"(H)",  "shades_smile.png"},
+            {":@",   "angry_smile.png"},
+            {":S",   "confused_smile.png"},
+            {":$",   "red_smile.png"},
+            {":(",   "sad_smile.png"},
+            {":'(",  "surprised_smile.png"}, // missing file?
+            {":|",   "what_face.png"},
+            {"(A)",  "angel_smile.png"},
+            {"8o|",  "48_48.png"},
+            {"8-|",  "49_49.png"},
+            {"+o(",  "52_52.png"},
+            {"|-)",  "77_77.png"},
+            {"*-)",  "72_72.png"},
+            {":-#",  "048.png"},
+            {":-*",  "51_51.png"},
+            {"^o)",  "50_50.png"},
+            {"8-)",  "71_71.png"},
+            {"(L)",  "015.png"},
+            {"(U)",  "016.png"},
+            {"(M)",  "017.png"},
+            {"(@)",  "018.png"},
+            {"(&)",  "019.png"},
+            {"(sn)", "054.png"},
+            {"(bah)","071.png"},
+            {"(S)",  "020.png"},
+            {"(*)",  "021.png"},
+            {"(#)",  "046.png"},
+            {"(R)",  "047.png"},
+            {"({)",  "035.png"},
+            {"(})",  "036.png"},
+            {"(K)",  "kiss.png"},
+            {"(F)",  "025.png"},
+        };
+
+        int row = 0;
+        int col = 0;
+        const int maxCols = 8;
+
+        for (const auto &pair : shortcutToFile) {
+            const QString &shortcut = pair.first;
+            const QString &file     = pair.second;
+
+            QString path = QDir::cleanPath(emojisDirPath + "/" + file);
+            QPixmap pix(path);
+            if (pix.isNull())
+                continue;
+
+            QIcon icon(pix);
+            QPushButton *btn = new QPushButton(&dialog);
+            btn->setIcon(icon);
+            btn->setIconSize(QSize(19, 19));
+            btn->setFixedSize(24, 24);
+            btn->setFlat(true);
+
+            QObject::connect(btn, &QPushButton::clicked, &dialog, [this, shortcut, &dialog]() {
+                // Insert shortcut at cursor position
+                QString current = ui->messageInput->text();
+                int pos = ui->messageInput->cursorPosition();
+                current.insert(pos, shortcut);
+                ui->messageInput->setText(current);
+                ui->messageInput->setCursorPosition(pos + shortcut.length());
+                dialog.accept();
+            });
+
+            grid->addWidget(btn, row, col);
+            ++col;
+            if (col >= maxCols) {
+                col = 0;
+                ++row;
+            }
+        }
+
+        layout->addLayout(grid);
+        dialog.exec();
+    });
+
+    // Home button: return to vintage home view
+    connect(ui->homeButton, &QPushButton::clicked, this, [this]() {
+        showHomeView();
+    });
 
     // Profile button: show dedicated profile screen + MSN-style picture dialog
     connect(ui->profileButton, &QPushButton::clicked, this, [this, dialogButtonStyle, closeButtonStyle]() {
@@ -403,15 +510,7 @@ ChatWindow::ChatWindow(const QString &username,
             m_status = newStatus;
 
             // Refresh avatar in header
-            QPixmap avatarPixmap;
-            if (!m_avatarFilename.isEmpty()) {
-                const QString resourcePath = ":/assets/avatar/" + m_avatarFilename;
-                QString filePath = QDir::cleanPath(
-                    QCoreApplication::applicationDirPath() + "/../assets/avatar/" + m_avatarFilename);
-                if (avatarPixmap.load(resourcePath) || avatarPixmap.load(filePath)) {
-                    ui->avatarLabel->setPixmap(avatarPixmap);
-                }
-            }
+            loadAvatar(m_avatarFilename);
 
             // Refresh profile view to show updated info
             showProfileView();
@@ -421,8 +520,11 @@ ChatWindow::ChatWindow(const QString &username,
     // Install event filter for Enter key
     ui->messageInput->installEventFilter(this);
 
-    // Configure chat display to accept HTML
+    // Configure chat display to accept HTML and allow emoji images to load
     ui->chatDisplay->setAcceptRichText(true);
+    QString emojisDirPath = QDir::cleanPath(
+        QCoreApplication::applicationDirPath() + "/../assets/emojis");
+    ui->chatDisplay->document()->setBaseUrl(QUrl::fromLocalFile(emojisDirPath + "/"));
 
     // Configure auth client for profile updates
     m_authClient->setServerUrl(m_serverUrl);
@@ -431,17 +533,7 @@ ChatWindow::ChatWindow(const QString &username,
     showHomeView();
 
     // Load and display the current user's avatar in the header.
-    // Try Qt resource first, then path relative to executable (e.g. build/../assets/avatar/).
-    QPixmap avatarPixmap;
-    if (!m_avatarFilename.isEmpty()) {
-        const QString resourcePath = ":/assets/avatar/" + m_avatarFilename;
-        QString filePath = QDir::cleanPath(QCoreApplication::applicationDirPath() + "/../assets/avatar/" + m_avatarFilename);
-        if (avatarPixmap.load(resourcePath)) {
-            ui->avatarLabel->setPixmap(avatarPixmap);
-        } else if (avatarPixmap.load(filePath)) {
-            ui->avatarLabel->setPixmap(avatarPixmap);
-        }
-    }
+    loadAvatar(m_avatarFilename);
 
     // Connect signals
     connect(ui->sendButton, &QPushButton::clicked, this, &ChatWindow::onSendClicked);
@@ -605,13 +697,20 @@ void ChatWindow::updateUserList(const QJsonArray &users)
     // Rebuild our local list of online users (excluding self)
     m_onlineUsers.clear();
     m_loginToDisplayName.clear();
+    m_loginToAvatar.clear();
+    m_loginToStatus.clear();
 
     for (const QJsonValue &value : users) {
         QJsonObject obj = value.toObject();
         QString login = obj["login"].toString();
         QString name  = obj["name"].toString().trimmed();
+        QString picture = obj["picture"].toString().trimmed();
+        QString status = obj["status"].toString().trimmed();
         if (name.isEmpty()) {
             name = login;
+        }
+        if (picture.isEmpty()) {
+            picture = "default.png";
         }
 
         qDebug() << "  - User login:" << login << "name:" << name;
@@ -619,6 +718,8 @@ void ChatWindow::updateUserList(const QJsonArray &users)
         if (login != m_username) {  // Don't show yourself in the list
             m_onlineUsers.append(name);
             m_loginToDisplayName[login] = name;
+            m_loginToAvatar[login] = picture;
+            m_loginToStatus[login] = status;
 
             QListWidgetItem *item = new QListWidgetItem(name);
             // Store the real username (login) separately so we always know it,
@@ -735,6 +836,102 @@ bool ChatWindow::eventFilter(QObject *obj, QEvent *event)
     return QWidget::eventFilter(obj, event);
 }
 
+void ChatWindow::loadAvatar(const QString &filename)
+{
+    ui->avatarLabel->clear();
+
+    if (filename.isEmpty()) {
+        return;
+    }
+
+    QPixmap avatarPixmap;
+    const QString resourcePath = ":/assets/avatar/" + filename;
+    QString filePath = QDir::cleanPath(
+        QCoreApplication::applicationDirPath() + "/../assets/avatar/" + filename);
+
+    if (avatarPixmap.load(resourcePath) || avatarPixmap.load(filePath)) {
+        ui->avatarLabel->setPixmap(avatarPixmap);
+    }
+}
+
+QString ChatWindow::emojiImageTag(const QString &filename) const
+{
+    // Use relative path; chat display document baseUrl is set to emojis folder
+    return QString("<img src=\"%1\" width=\"19\" height=\"19\" />")
+        .arg(filename.toHtmlEscaped());
+}
+
+QString ChatWindow::applyEmojiShortcuts(const QString &text,
+                                        const QString &username,
+                                        bool isFromMe) const
+{
+    Q_UNUSED(username);
+    Q_UNUSED(isFromMe);
+
+    // Example mapping table. Add more shortcuts/files here.
+    static const QList<QPair<QString, QString>> shortcutToFile = {
+        {":D",  "teeth_smile.png"},
+        {";)",  "03.png"},
+        {":)",  "001.png"},
+        {":-O",  "omg_smile.png"},
+        {":P",  "tongue_smile.png"},
+        {"(H)",  "shades_smile.png"},
+        {":@",  "angry_smile.png"},
+        {":S",  "confused_smile.png"},
+        {":$",  "red_smile.png"},
+        {":(",  "sad_smile.png"},
+        {":'(",  "surprised_smile.png"}, //missing
+        {":|",  "what_face.png"},
+        {"(A)",  "angel_smile.png"},
+        {"8o|",  "48_48.png"},
+        {"8-|",  "49_49.png"},
+        {"+o(",  "52_52.png"},
+        {"|-)",  "77_77.png"},
+        {"*-)",  "72_72.png"},
+        {":-#",  "048.png"},
+        {":-*",  "51_51.png"},
+        {"^o)",  "50_50.png"},
+        {"8-)",  "71_71.png"},
+        {"(L)",  "015.png"},
+        {"(U)",  "016.png"},
+        {"(M)",  "017.png"},
+        {"(@)",  "018.png"},
+        {"(&)",  "019.png"},
+        {"(sn)",  "054.png"},
+        {"(bah)",  "071.png"},
+        {"(S)",  "020.png"},
+        {"(*)",  "021.png"},
+        {"(#)",  "046.png"},
+        {"(R)",  "047.png"},
+        {"({)",  "035.png"},
+        {"(})",  "036.png"},
+        {"(K)",  "kiss.png"},
+        {"(F)",  "025.png"},
+
+
+    };
+
+    // Replace shortcuts with placeholders so they survive HTML escaping
+    QString result = text;
+    for (const auto &pair : shortcutToFile) {
+        const QString &shortcut = pair.first;
+        const QString &file     = pair.second;
+        QString placeholder = QString("{{EMOJI:%1}}").arg(file);
+        result.replace(shortcut, placeholder);
+    }
+
+    result = result.toHtmlEscaped();
+
+    // Replace placeholders with img tags (relative path; baseUrl set on chat document)
+    for (const auto &pair : shortcutToFile) {
+        const QString &file = pair.second;
+        QString placeholder = QString("{{EMOJI:%1}}").arg(file);
+        result.replace(placeholder.toHtmlEscaped(), emojiImageTag(file));
+    }
+
+    return result;
+}
+
 void ChatWindow::showHomeView()
 {
     // No active chat target in home view
@@ -753,6 +950,10 @@ void ChatWindow::showHomeView()
     // Hide message input area (read-only home screen)
     ui->messageInput->setVisible(false);
     ui->sendButton->setVisible(false);
+    ui->emojiButton->setVisible(false);
+
+    // Show current user's avatar in home view
+    loadAvatar(m_avatarFilename);
 
     // Initialize content: welcome + online users summary, but no profile details
     ui->chatDisplay->clear();
@@ -772,10 +973,6 @@ void ChatWindow::showHomeView()
         ui->chatDisplay->append(
             "<p style='color: #666;'>Users connected (" + QString::number(count) +
             "): " + list.toHtmlEscaped() + "</p>"
-        );
-        ui->chatDisplay->append(
-            "<p style='color: #666; font-style: italic;'>Select a contact on the left "
-            "to start a private conversation.</p>"
         );
     }
 }
@@ -798,21 +995,43 @@ void ChatWindow::showProfileView()
     // Hide message input area (read-only profile screen)
     ui->messageInput->setVisible(false);
     ui->sendButton->setVisible(false);
+    ui->emojiButton->setVisible(false);
 
-    // Initialize content with current user's info (no server info)
+    // Show current user's avatar in profile view
+    loadAvatar(m_avatarFilename);
+
+    // Initialize content with a more vintage profile layout, showing the picture
     ui->chatDisplay->clear();
-    ui->chatDisplay->append(
-        "<p style='color: #003B75; font-weight: bold;'>Your profile</p>"
-    );
-    ui->chatDisplay->append(
-        "<p style='margin-top: 8px;'><b>Username:</b> "
-        + m_username.toHtmlEscaped() + "<br>"
-        "<b>Display name:</b> " + m_displayName.toHtmlEscaped() + "<br>"
-        "<b>Avatar:</b> " + (m_avatarFilename.isEmpty()
-            ? QString("default.png").toHtmlEscaped()
-            : m_avatarFilename.toHtmlEscaped()) + "<br>"
-        "<b>Status:</b> " + m_status.toHtmlEscaped() + "</p>"
-    );
+
+    const QString avatarFile = m_avatarFilename.isEmpty()
+        ? QStringLiteral("default.png")
+        : m_avatarFilename;
+    const QString avatarPath = QDir::cleanPath(
+        QCoreApplication::applicationDirPath() + "/../assets/avatar/" + avatarFile);
+    const QString avatarUrl = QUrl::fromLocalFile(avatarPath).toString();
+
+    QString html =
+        "<div style='font-family: Tahoma, Arial, sans-serif; font-size: 11px;'>"
+        "<table cellpadding='6' cellspacing='0'>"
+        "<tr>"
+        "<td valign='top' style='border:1px solid #7F9DB9; background-color:#FFFFFF;'>"
+        "<img src=\"" + avatarUrl + "\" width='96' height='96' "
+        "style='display:block;' />"
+        "</td>"
+        "<td valign='top' style='padding-left:8px;'>"
+        "<p style='color:#003B75; font-weight:bold; margin:0 0 6px 0;'>Your profile</p>"
+        "<p style='margin:0 0 4px 0;'><b>Display name:</b> "
+        + m_displayName.toHtmlEscaped() + "</p>"
+        "<p style='margin:0 0 4px 0;'><b>Username:</b> "
+        + m_username.toHtmlEscaped() + "</p>"
+        "<p style='margin:0;'><b>Status:</b> "
+        + m_status.toHtmlEscaped() + "</p>"
+        "</td>"
+        "</tr>"
+        "</table>"
+        "</div>";
+
+    ui->chatDisplay->insertHtml(html);
 }
 
 void ChatWindow::switchToConversation(const QString &username)
@@ -829,9 +1048,14 @@ void ChatWindow::switchToConversation(const QString &username)
         setWindowTitle(titleText);
     }
 
+    // Show avatar of the user we're chatting with (fallback to default)
+    const QString partnerAvatar = m_loginToAvatar.value(username, QStringLiteral("default.png"));
+    loadAvatar(partnerAvatar);
+
     // Ensure message input is visible in chat mode
     ui->messageInput->setVisible(true);
     ui->sendButton->setVisible(true);
+    ui->emojiButton->setVisible(true);
     
     // Clear and display messages for this conversation
     ui->chatDisplay->clear();
@@ -862,20 +1086,30 @@ void ChatWindow::switchToConversation(const QString &username)
 
 void ChatWindow::addMessageToConversation(const QString &username, const QString &text, bool isFromMe)
 {
-    QDateTime now = QDateTime::currentDateTime();
-    QString timestamp = now.toString("hh:mm:ss");
-    
     QString htmlMessage;
     if (isFromMe) {
-        htmlMessage = QString("<p>[%1] <b style='color: #0066CC;'>You</b>: %2</p>")
-                      .arg(timestamp)
-                      .arg(text.toHtmlEscaped());
+        QString statusText = m_status.trimmed();
+        QString nameLabel = m_displayName.toHtmlEscaped();
+        if (!statusText.isEmpty()) {
+            nameLabel += " (" + statusText.toHtmlEscaped() + ")";
+        }
+        QString prefix = QString("(%1) dit :").arg(nameLabel);
+        QString bodyHtml = applyEmojiShortcuts(text, username, true);
+        htmlMessage = QString("<p><b style='color: #0066CC;'>%1</b> %2</p>")
+                      .arg(prefix)
+                      .arg(bodyHtml);
     } else {
         QString displayName = m_loginToDisplayName.value(username, username);
-        htmlMessage = QString("<p>[%1] <b style='color: #CC0066;'>%2</b>: %3</p>")
-                      .arg(timestamp)
-                      .arg(displayName.toHtmlEscaped())
-                      .arg(text.toHtmlEscaped());
+        QString statusText = m_loginToStatus.value(username).trimmed();
+        QString nameLabel = displayName.toHtmlEscaped();
+        if (!statusText.isEmpty()) {
+            nameLabel += " (" + statusText.toHtmlEscaped() + ")";
+        }
+        QString prefix = QString("(%1) dit :").arg(nameLabel);
+        QString bodyHtml = applyEmojiShortcuts(text, username, false);
+        htmlMessage = QString("<p><b style='color: #CC0066;'>%1</b> %2</p>")
+                      .arg(prefix)
+                      .arg(bodyHtml);
     }
     
     // Store message in conversation

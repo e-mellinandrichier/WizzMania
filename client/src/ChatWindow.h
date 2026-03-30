@@ -48,6 +48,9 @@ private:
     void showProfileView();
     void switchToConversation(const QString &username);
     void addMessageToConversation(const QString &from, const QString &message, bool isFromMe = false);
+    void loadAvatar(const QString &filename);
+    QString emojiImageTag(const QString &filename) const;
+    QString applyEmojiShortcuts(const QString &text, const QString &username, bool isFromMe) const;
 
     Ui::ChatWindow *ui;
     QString m_username;
@@ -63,8 +66,10 @@ private:
     bool m_identified;
     // Store messages per conversation: username (login) -> list of HTML messages
     QMap<QString, QStringList> m_conversations;
-    // Map login -> display name
+    // Map login -> display name, avatar filename, and status
     QMap<QString, QString> m_loginToDisplayName;
+    QMap<QString, QString> m_loginToAvatar;
+    QMap<QString, QString> m_loginToStatus;
     // Track current list of other connected users (display names), for profile view
     QStringList m_onlineUsers;
 };

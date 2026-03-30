@@ -167,20 +167,48 @@
         </property>
         <layout class="QHBoxLayout" name="contentLayout">
          <property name="spacing">
-          <number>5</number>
+          <number>0</number>
          </property>
          <property name="leftMargin">
-          <number>5</number>
+          <number>0</number>
          </property>
          <property name="topMargin">
-          <number>5</number>
+          <number>0</number>
          </property>
          <property name="rightMargin">
-          <number>5</number>
+          <number>0</number>
          </property>
          <property name="bottomMargin">
-          <number>5</number>
+          <number>0</number>
          </property>
+         <item>
+          <widget class="QWidget" name="leftSideRail" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>10</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>10</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string>background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+    stop:0 #001899,
+    stop:0.05 #001FAA,
+    stop:0.20 #0028BB,
+    stop:0.50 #0036D3,
+    stop:0.75 #0044DD,
+    stop:0.88 #0055EE,
+    stop:0.94 #0066FF,
+    stop:0.97 #0D8FFF,
+    stop:1.0 #1AA7FF);</string>
+           </property>
+          </widget>
+         </item>
          <item>
           <widget class="QWidget" name="userListWidget" native="true">
            <property name="minimumSize">
@@ -196,7 +224,8 @@
             </size>
            </property>
            <property name="styleSheet">
-            <string>background-color: #F0F8FF; border-right: 1px solid #7F9DB9;</string>
+            <string>background-color: #E3EBF6;
+border-right: 1px solid #7F9DB9;</string>
            </property>
            <layout class="QVBoxLayout" name="userListLayout">
             <property name="spacing">
@@ -215,19 +244,76 @@
              <number>5</number>
             </property>
             <item>
-             <widget class="QLabel" name="userListTitleLabel">
+             <widget class="QPushButton" name="homeButton">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>18</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>18</height>
+               </size>
+              </property>
               <property name="text">
-               <string>Online Users</string>
+               <string>&lt; Home</string>
               </property>
               <property name="styleSheet">
-               <string>font-size: 11px; font-weight: bold; color: #003B75; padding: 5px;</string>
+               <string>QPushButton#homeButton {
+    border: none;
+    background: transparent;
+    color: #003B75;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: left;
+    padding: 0 2px;
+}
+QPushButton#homeButton:hover {
+    text-decoration: underline;
+}</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="userListTitleLabel">
+              <property name="text">
+               <string>Online</string>
+              </property>
+              <property name="styleSheet">
+               <string>background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #FFFFFF,
+        stop:0.4 #DCE7F7,
+        stop:1 #C0D4F2);
+font-size: 11px;
+font-weight: bold;
+color: #003B75;
+padding: 4px 6px;
+border: 1px solid #7F9DB9;</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QListWidget" name="userList">
               <property name="styleSheet">
-               <string>border: 1px solid #7F9DB9; font-family: Tahoma, Arial, sans-serif; font-size: 11px; background-color: white;</string>
+               <string>QListWidget {
+    border: 1px solid #7F9DB9;
+    border-top: none;
+    font-family: Tahoma, Arial, sans-serif;
+    font-size: 11px;
+    background-color: #FFFFFF;
+}
+QListWidget::item {
+    padding: 2px 4px;
+}
+QListWidget::item:selected {
+    background: #0A64D0;
+    color: white;
+}
+QListWidget::item:hover {
+    background: #CDE4FF;
+}</string>
               </property>
              </widget>
             </item>
@@ -252,6 +338,13 @@
          </item>
          <item>
           <widget class="QWidget" name="chatAreaWidget" native="true">
+           <property name="styleSheet">
+            <string>QWidget#chatAreaWidget {
+    background-color: #FFFFFF;
+    border: 1px solid #7F9DB9;
+    border-left: none;
+}</string>
+           </property>
            <layout class="QVBoxLayout" name="chatAreaLayout">
             <property name="spacing">
              <number>10</number>
@@ -337,7 +430,7 @@
             <item>
              <layout class="QHBoxLayout" name="inputLayout">
               <property name="spacing">
-               <number>10</number>
+               <number>6</number>
               </property>
               <item>
                <widget class="QLineEdit" name="messageInput">
@@ -352,6 +445,39 @@
                 </property>
                 <property name="styleSheet">
                  <string>border: 1px solid #7F9DB9; padding: 2px 5px; font-family: Tahoma, Arial, sans-serif; font-size: 12px;</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="emojiButton">
+                <property name="minimumSize">
+                 <size>
+                  <width>24</width>
+                  <height>24</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>24</width>
+                  <height>24</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>☺</string>
+                </property>
+                <property name="toolTip">
+                 <string>Insert emoticon</string>
+                </property>
+                <property name="styleSheet">
+                 <string>QPushButton#emojiButton {
+    border: 1px solid #7F9DB9;
+    background-color: #E3EBF6;
+    font-size: 12px;
+    padding: 0;
+}
+QPushButton#emojiButton:hover {
+    background-color: #F5FAFF;
+}</string>
                 </property>
                </widget>
               </item>
@@ -374,6 +500,34 @@
              </layout>
             </item>
            </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="rightSideRail" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>10</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>10</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string>background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+    stop:0 #001899,
+    stop:0.05 #001FAA,
+    stop:0.20 #0028BB,
+    stop:0.50 #0036D3,
+    stop:0.75 #0044DD,
+    stop:0.88 #0055EE,
+    stop:0.94 #0066FF,
+    stop:0.97 #0D8FFF,
+    stop:1.0 #1AA7FF);</string>
+           </property>
           </widget>
          </item>
         </layout>

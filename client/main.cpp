@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QFont>
 #include "src/LoginWindow.h"
 #include "src/ChatWindow.h"
 #include <QDebug>
@@ -6,6 +7,11 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+
+    // Global retro font: Tahoma everywhere in the client
+    QFont appFont("Tahoma");
+    appFont.setStyleHint(QFont::SansSerif);
+    app.setFont(appFont);
 
     LoginWindow loginWindow;
     loginWindow.show();

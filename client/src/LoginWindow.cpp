@@ -45,6 +45,9 @@ LoginWindow::LoginWindow(QWidget *parent)
         "        stop:0.3 #5A8BB7,"
         "        stop:0.7 #4A7BA7,"
         "        stop:1 #3A6B97);"
+        "    border-left: 10px solid #1AA7FF;"
+        "    border-right: 10px solid #1AA7FF;"
+        "    border-radius: 10px;"
         "}"
         "QWidget#titleBar {"
         "    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
@@ -155,7 +158,7 @@ LoginWindow::LoginWindow(QWidget *parent)
         "}"
     );
     
-    // Ensure Sign In button has Windows XP style gradient (fallback if QSS doesn't load)
+    // Ensure Sign In / Sign Up button has Windows XP style gradient (fallback if QSS doesn't load)
     ui->loginButton->setStyleSheet(
         "QPushButton#loginButton {"
         "    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
@@ -191,49 +194,17 @@ LoginWindow::LoginWindow(QWidget *parent)
         "}"
     );
     
-    // Style Sign Up button with same orange gradient as Sign In
-    ui->registerButton->setStyleSheet(
-        "QPushButton#registerButton {"
-        "    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
-        "        stop:0 rgb(255, 200, 80),"
-        "        stop:0.5 rgb(252, 165, 3),"
-        "        stop:1 rgb(220, 140, 0));"
-        "    border: 1px solid #B87300;"
-        "    border-top: 1px solid #FFD700;"
-        "    border-left: 1px solid #FFA500;"
-        "    border-radius: 3px;"
-        "    color: #FFFFFF;"
-        "    font-size: 11px;"
-        "    font-weight: bold;"
-        "    font-family: 'Tahoma', 'Arial', sans-serif;"
-        "    padding: 4px;"
-        "}"
-        "QPushButton#registerButton:hover {"
-        "    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
-        "        stop:0 rgb(255, 210, 90),"
-        "        stop:0.5 rgb(255, 175, 10),"
-        "        stop:1 rgb(240, 150, 5));"
-        "    border-top: 1px solid #FFE55C;"
-        "    border-left: 1px solid #FFB84D;"
-        "}"
-        "QPushButton#registerButton:pressed {"
-        "    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,"
-        "        stop:0 rgb(220, 140, 0),"
-        "        stop:0.5 rgb(200, 120, 0),"
-        "        stop:1 rgb(180, 110, 0));"
-        "    border: 1px inset #B87300;"
-        "    border-top: 1px solid #996600;"
-        "    border-left: 1px solid #996600;"
-        "}"
-    );
-    
     // Connect form signals
     connect(ui->loginButton, &QPushButton::clicked, this, &LoginWindow::onLoginClicked);
-    connect(ui->registerButton, &QPushButton::clicked, this, &LoginWindow::onRegisterClicked);
     connect(m_authClient, &AuthClient::registerSuccess, this, &LoginWindow::onRegisterSuccess);
     connect(m_authClient, &AuthClient::registerFailed, this, &LoginWindow::onRegisterFailed);
     connect(m_authClient, &AuthClient::loginSuccess, this, &LoginWindow::onLoginSuccess);
     connect(m_authClient, &AuthClient::loginFailed, this, &LoginWindow::onLoginFailed);
+
+    // Initial mode: Sign In
+    ui->signUpCheckBox->setChecked(false);
+    onSignUpToggled(false);
+    connect(ui->signUpCheckBox, &QCheckBox::toggled, this, &LoginWindow::onSignUpToggled);
 }
 
 LoginWindow::~LoginWindow()
@@ -242,24 +213,6 @@ LoginWindow::~LoginWindow()
 }
 
 void LoginWindow::onLoginClicked()
-{
-    QString username = ui->usernameInput->text().trimmed();
-    QString password = ui->passwordInput->text();
-
-    if (username.isEmpty() || password.isEmpty()) {
-        ui->statusLabel->setText("Please enter both username and password");
-        ui->statusLabel->setStyleSheet("font-size: 9px; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);");
-        return;
-    }
-
-    m_authClient->setServerUrl(m_serverUrl);
-    ui->statusLabel->setText("Logging in...");
-    ui->loginButton->setEnabled(false);
-    ui->registerButton->setEnabled(false);
-    m_authClient->login(username, password);
-}
-
-void LoginWindow::onRegisterClicked()
 {
     QString username = ui->usernameInput->text().trimmed();
     QString password = ui->passwordInput->text();
@@ -274,10 +227,18 @@ void LoginWindow::onRegisterClicked()
     }
 
     m_authClient->setServerUrl(m_serverUrl);
-    ui->statusLabel->setText("Registering...");
-    ui->loginButton->setEnabled(false);
-    ui->registerButton->setEnabled(false);
-    m_authClient->registerUser(username, password, displayName, avatarFile, statusText);
+    
+    if (ui->signUpCheckBox->isChecked()) {
+        // Sign Up flow
+        ui->statusLabel->setText("Registering...");
+        ui->loginButton->setEnabled(false);
+        m_authClient->registerUser(username, password, displayName, avatarFile, statusText);
+    } else {
+        // Sign In flow
+        ui->statusLabel->setText("Logging in...");
+        ui->loginButton->setEnabled(false);
+        m_authClient->login(username, password);
+    }
 }
 
 void LoginWindow::onRegisterSuccess()
@@ -285,7 +246,6 @@ void LoginWindow::onRegisterSuccess()
     ui->statusLabel->setText("Registration successful! You can now login.");
     ui->statusLabel->setStyleSheet("font-size: 9px; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);");
     ui->loginButton->setEnabled(true);
-    ui->registerButton->setEnabled(true);
 }
 
 void LoginWindow::onRegisterFailed(const QString &error)
@@ -293,7 +253,6 @@ void LoginWindow::onRegisterFailed(const QString &error)
     ui->statusLabel->setText("Registration failed: " + error);
     ui->statusLabel->setStyleSheet("font-size: 9px; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);");
     ui->loginButton->setEnabled(true);
-    ui->registerButton->setEnabled(true);
 }
 
 void LoginWindow::onLoginSuccess(const QString &username,
@@ -309,7 +268,26 @@ void LoginWindow::onLoginFailed(const QString &error)
     ui->statusLabel->setText("Login failed: " + error);
     ui->statusLabel->setStyleSheet("font-size: 9px; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);");
     ui->loginButton->setEnabled(true);
-    ui->registerButton->setEnabled(true);
+}
+
+void LoginWindow::onSignUpToggled(bool checked)
+{
+    // Extra fields only for Sign Up
+    ui->displayNameLabel->setVisible(checked);
+    ui->displayNameInput->setVisible(checked);
+    ui->statusLabelField->setVisible(checked);
+    ui->statusInput->setVisible(checked);
+    ui->avatarLabel->setVisible(checked);
+    ui->avatarInput->setVisible(checked);
+
+    // Remember password only really makes sense for Sign In
+    ui->rememberMeCheckBox->setVisible(!checked);
+
+    // Button text
+    ui->loginButton->setText(checked ? "Sign Up" : "Sign In");
+
+    // Clear status label when switching modes
+    ui->statusLabel->clear();
 }
 
 void LoginWindow::mousePressEvent(QMouseEvent *event)

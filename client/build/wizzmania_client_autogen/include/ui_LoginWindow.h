@@ -56,10 +56,10 @@ public:
     QWidget *rememberMeWidget;
     QHBoxLayout *rememberMeLayout;
     QCheckBox *rememberMeCheckBox;
+    QCheckBox *signUpCheckBox;
     QWidget *buttonsWidget;
     QHBoxLayout *buttonsLayout;
     QPushButton *loginButton;
-    QPushButton *registerButton;
     QWidget *linksWidget;
     QVBoxLayout *linksLayout;
     QWidget *footerWidget;
@@ -233,6 +233,11 @@ public:
 
         rememberMeLayout->addWidget(rememberMeCheckBox);
 
+        signUpCheckBox = new QCheckBox(rememberMeWidget);
+        signUpCheckBox->setObjectName("signUpCheckBox");
+
+        rememberMeLayout->addWidget(signUpCheckBox);
+
 
         formLayout->addWidget(rememberMeWidget);
 
@@ -248,13 +253,6 @@ public:
         loginButton->setMaximumSize(QSize(16777215, 24));
 
         buttonsLayout->addWidget(loginButton);
-
-        registerButton = new QPushButton(buttonsWidget);
-        registerButton->setObjectName("registerButton");
-        registerButton->setMinimumSize(QSize(0, 24));
-        registerButton->setMaximumSize(QSize(16777215, 24));
-
-        buttonsLayout->addWidget(registerButton);
 
 
         formLayout->addWidget(buttonsWidget);
@@ -333,8 +331,9 @@ public:
         avatarInput->setStyleSheet(QCoreApplication::translate("LoginWindow", "font-size: 11px; font-family: Tahoma, Arial, sans-serif; border: 1px solid #7F9DB9; padding: 2px 3px;", nullptr));
         rememberMeCheckBox->setText(QCoreApplication::translate("LoginWindow", "Remember my password", nullptr));
         rememberMeCheckBox->setStyleSheet(QCoreApplication::translate("LoginWindow", "font-size: 11px; color: #000000;", nullptr));
+        signUpCheckBox->setText(QCoreApplication::translate("LoginWindow", "Sign up", nullptr));
+        signUpCheckBox->setStyleSheet(QCoreApplication::translate("LoginWindow", "font-size: 11px; color: #000000;", nullptr));
         loginButton->setText(QCoreApplication::translate("LoginWindow", "Sign In", nullptr));
-        registerButton->setText(QCoreApplication::translate("LoginWindow", "Sign Up", nullptr));
         statusLabel->setText(QString());
         statusLabel->setStyleSheet(QCoreApplication::translate("LoginWindow", "font-size: 9px; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.7); padding: 8px;", nullptr));
     } // retranslateUi

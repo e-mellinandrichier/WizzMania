@@ -31,7 +31,6 @@ signals:
 
 private slots:
     void onLoginClicked();
-    void onRegisterClicked();
     void onRegisterSuccess();
     void onRegisterFailed(const QString &error);
     void onLoginSuccess(const QString &username,
@@ -39,6 +38,7 @@ private slots:
                         const QString &avatarFilename,
                         const QString &status);
     void onLoginFailed(const QString &error);
+    void onSignUpToggled(bool checked);
 
 private:
     Ui::LoginWindow *ui;

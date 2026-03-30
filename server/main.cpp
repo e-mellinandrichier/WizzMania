@@ -398,17 +398,19 @@ int main() {
         });
 
     // Helper function to broadcast user list to all connected users
-    // Sends: {"type":"user_list","users":[{"login":"alice123","name":"Alice"}, ...]}
+    // Sends: {"type":"user_list","users":[{"login":"alice123","name":"Alice","picture":"default.png","status":"Hey there!"}, ...]}
     auto broadcast_user_list = [&]() {
         std::string json_users = "[";
         bool first = true;
 
         // Prepare statement once per broadcast
         sqlite3_stmt* stmt = nullptr;
-        const char* sql = "SELECT name FROM users WHERE login = ?;";
+        const char* sql = "SELECT name, picture, status FROM users WHERE login = ?;";
 
         for (const auto& [username, conn] : user_to_connection) {
             std::string display_name = username;
+            std::string picture = "default.png";
+            std::string status = "";
 
             if (db) {
                 if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) == SQLITE_OK) {
@@ -423,6 +425,22 @@ int main() {
                                 display_name = fetched_name;
                             }
                         }
+                        const unsigned char* picture_text = sqlite3_column_text(stmt, 1);
+                        if (picture_text) {
+                            std::string fetched_picture =
+                                reinterpret_cast<const char*>(picture_text);
+                            if (!fetched_picture.empty()) {
+                                picture = fetched_picture;
+                            }
+                        }
+                        const unsigned char* status_text = sqlite3_column_text(stmt, 2);
+                        if (status_text) {
+                            std::string fetched_status =
+                                reinterpret_cast<const char*>(status_text);
+                            if (!fetched_status.empty()) {
+                                status = fetched_status;
+                            }
+                        }
                     }
                     sqlite3_finalize(stmt);
                     stmt = nullptr;
@@ -431,7 +449,9 @@ int main() {
 
             if (!first) json_users += ",";
             json_users += R"({"login": ")" + username +
-                          R"(", "name": ")" + display_name + R"("})";
+                          R"(", "name": ")" + display_name +
+                          R"(", "picture": ")" + picture +
+                          R"(", "status": ")" + status + R"("})";
             first = false;
         }
 

@@ -2244,6 +2244,7 @@ CMakeFiles/wizzmania_client.dir/main.cpp.o: /Users/melli/Code/WizzMania/client/m
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qversiontagging.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qxptype_traits.h \
   /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qyieldcpu.h \
+  /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QFont \
   /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QMouseEvent \
   /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QTransform \
   /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/qaction.h \
@@ -7716,6 +7717,8 @@ wizzmania_client_autogen/include/ui_ChatWindow.h:
 
 /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qjsonvalue.h:
 
+/opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qjsonparseerror.h:
+
 /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qjsondocument.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__exception/nested_exception.h:
@@ -8183,8 +8186,6 @@ wizzmania_client_autogen/UVLADIE3JM/moc_LoginWindow.cpp:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__atomic/memory_order.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_stdlib.h:
-
-/opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qjsonparseerror.h:
 
 /opt/homebrew/opt/qt/lib/QtNetwork.framework/Headers/qsslconfiguration.h:
 
@@ -10945,6 +10946,8 @@ wizzmania_client_autogen/UVLADIE3JM/moc_ChatWindow.cpp:
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__memory/shared_count.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/partition.h:
+
+/opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QFont:
 
 /opt/homebrew/Cellar/qtbase/6.10.1/lib/QtCore.framework/Versions/A/Headers/qarraydata.h:
 

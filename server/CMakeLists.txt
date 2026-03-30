@@ -28,4 +28,3 @@ add_executable(wizzmania_server
 )
 
 target_link_libraries(wizzmania_server PRIVATE SQLite::SQLite3)
-

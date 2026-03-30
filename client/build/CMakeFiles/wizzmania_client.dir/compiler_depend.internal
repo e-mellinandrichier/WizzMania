@@ -2246,6 +2246,7 @@ CMakeFiles/wizzmania_client.dir/main.cpp.o
  /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qversiontagging.h
  /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qxptype_traits.h
  /opt/homebrew/opt/qt/lib/QtCore.framework/Headers/qyieldcpu.h
+ /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QFont
  /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QMouseEvent
  /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/QTransform
  /opt/homebrew/opt/qt/lib/QtGui.framework/Headers/qaction.h

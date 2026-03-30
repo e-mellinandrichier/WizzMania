@@ -38,8 +38,10 @@ public:
     QPushButton *closeButton;
     QWidget *contentWidget;
     QHBoxLayout *contentLayout;
+    QWidget *leftSideRail;
     QWidget *userListWidget;
     QVBoxLayout *userListLayout;
+    QPushButton *homeButton;
     QLabel *userListTitleLabel;
     QListWidget *userList;
     QPushButton *profileButton;
@@ -52,7 +54,9 @@ public:
     QTextEdit *chatDisplay;
     QHBoxLayout *inputLayout;
     QLineEdit *messageInput;
+    QPushButton *emojiButton;
     QPushButton *sendButton;
+    QWidget *rightSideRail;
     QLabel *statusLabel;
 
     void setupUi(QWidget *ChatWindow)
@@ -114,9 +118,16 @@ public:
         contentWidget = new QWidget(windowContainer);
         contentWidget->setObjectName("contentWidget");
         contentLayout = new QHBoxLayout(contentWidget);
-        contentLayout->setSpacing(5);
+        contentLayout->setSpacing(0);
         contentLayout->setObjectName("contentLayout");
-        contentLayout->setContentsMargins(5, 5, 5, 5);
+        contentLayout->setContentsMargins(0, 0, 0, 0);
+        leftSideRail = new QWidget(contentWidget);
+        leftSideRail->setObjectName("leftSideRail");
+        leftSideRail->setMinimumSize(QSize(10, 0));
+        leftSideRail->setMaximumSize(QSize(10, 16777215));
+
+        contentLayout->addWidget(leftSideRail);
+
         userListWidget = new QWidget(contentWidget);
         userListWidget->setObjectName("userListWidget");
         userListWidget->setMinimumSize(QSize(180, 0));
@@ -125,6 +136,13 @@ public:
         userListLayout->setSpacing(5);
         userListLayout->setObjectName("userListLayout");
         userListLayout->setContentsMargins(5, 5, 5, 5);
+        homeButton = new QPushButton(userListWidget);
+        homeButton->setObjectName("homeButton");
+        homeButton->setMinimumSize(QSize(0, 18));
+        homeButton->setMaximumSize(QSize(16777215, 18));
+
+        userListLayout->addWidget(homeButton);
+
         userListTitleLabel = new QLabel(userListWidget);
         userListTitleLabel->setObjectName("userListTitleLabel");
 
@@ -180,13 +198,20 @@ public:
         chatAreaLayout->addWidget(chatDisplay);
 
         inputLayout = new QHBoxLayout();
-        inputLayout->setSpacing(10);
+        inputLayout->setSpacing(6);
         inputLayout->setObjectName("inputLayout");
         messageInput = new QLineEdit(chatAreaWidget);
         messageInput->setObjectName("messageInput");
         messageInput->setMinimumSize(QSize(0, 30));
 
         inputLayout->addWidget(messageInput);
+
+        emojiButton = new QPushButton(chatAreaWidget);
+        emojiButton->setObjectName("emojiButton");
+        emojiButton->setMinimumSize(QSize(24, 24));
+        emojiButton->setMaximumSize(QSize(24, 24));
+
+        inputLayout->addWidget(emojiButton);
 
         sendButton = new QPushButton(chatAreaWidget);
         sendButton->setObjectName("sendButton");
@@ -199,6 +224,13 @@ public:
 
 
         contentLayout->addWidget(chatAreaWidget);
+
+        rightSideRail = new QWidget(contentWidget);
+        rightSideRail->setObjectName("rightSideRail");
+        rightSideRail->setMinimumSize(QSize(10, 0));
+        rightSideRail->setMaximumSize(QSize(10, 16777215));
+
+        contentLayout->addWidget(rightSideRail);
 
 
         windowLayout->addWidget(contentWidget);
@@ -227,20 +259,96 @@ public:
         maximizeButton->setText(QCoreApplication::translate("ChatWindow", "\342\226\241", nullptr));
         closeButton->setText(QCoreApplication::translate("ChatWindow", "\303\227", nullptr));
         contentWidget->setStyleSheet(QCoreApplication::translate("ChatWindow", "background-color: white;", nullptr));
-        userListWidget->setStyleSheet(QCoreApplication::translate("ChatWindow", "background-color: #F0F8FF; border-right: 1px solid #7F9DB9;", nullptr));
-        userListTitleLabel->setText(QCoreApplication::translate("ChatWindow", "Online Users", nullptr));
-        userListTitleLabel->setStyleSheet(QCoreApplication::translate("ChatWindow", "font-size: 11px; font-weight: bold; color: #003B75; padding: 5px;", nullptr));
-        userList->setStyleSheet(QCoreApplication::translate("ChatWindow", "border: 1px solid #7F9DB9; font-family: Tahoma, Arial, sans-serif; font-size: 11px; background-color: white;", nullptr));
+        leftSideRail->setStyleSheet(QCoreApplication::translate("ChatWindow", "background: qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"    stop:0 #001899,\n"
+"    stop:0.05 #001FAA,\n"
+"    stop:0.20 #0028BB,\n"
+"    stop:0.50 #0036D3,\n"
+"    stop:0.75 #0044DD,\n"
+"    stop:0.88 #0055EE,\n"
+"    stop:0.94 #0066FF,\n"
+"    stop:0.97 #0D8FFF,\n"
+"    stop:1.0 #1AA7FF);", nullptr));
+        userListWidget->setStyleSheet(QCoreApplication::translate("ChatWindow", "background-color: #E3EBF6;\n"
+"border-right: 1px solid #7F9DB9;", nullptr));
+        homeButton->setText(QCoreApplication::translate("ChatWindow", "< Home", nullptr));
+        homeButton->setStyleSheet(QCoreApplication::translate("ChatWindow", "QPushButton#homeButton {\n"
+"    border: none;\n"
+"    background: transparent;\n"
+"    color: #003B75;\n"
+"    font-size: 10px;\n"
+"    font-weight: bold;\n"
+"    text-align: left;\n"
+"    padding: 0 2px;\n"
+"}\n"
+"QPushButton#homeButton:hover {\n"
+"    text-decoration: underline;\n"
+"}", nullptr));
+        userListTitleLabel->setText(QCoreApplication::translate("ChatWindow", "Online", nullptr));
+        userListTitleLabel->setStyleSheet(QCoreApplication::translate("ChatWindow", "background: qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"        stop:0 #FFFFFF,\n"
+"        stop:0.4 #DCE7F7,\n"
+"        stop:1 #C0D4F2);\n"
+"font-size: 11px;\n"
+"font-weight: bold;\n"
+"color: #003B75;\n"
+"padding: 4px 6px;\n"
+"border: 1px solid #7F9DB9;", nullptr));
+        userList->setStyleSheet(QCoreApplication::translate("ChatWindow", "QListWidget {\n"
+"    border: 1px solid #7F9DB9;\n"
+"    border-top: none;\n"
+"    font-family: Tahoma, Arial, sans-serif;\n"
+"    font-size: 11px;\n"
+"    background-color: #FFFFFF;\n"
+"}\n"
+"QListWidget::item {\n"
+"    padding: 2px 4px;\n"
+"}\n"
+"QListWidget::item:selected {\n"
+"    background: #0A64D0;\n"
+"    color: white;\n"
+"}\n"
+"QListWidget::item:hover {\n"
+"    background: #CDE4FF;\n"
+"}", nullptr));
         profileButton->setText(QCoreApplication::translate("ChatWindow", "Profile", nullptr));
         profileButton->setStyleSheet(QCoreApplication::translate("ChatWindow", "font-weight: bold;", nullptr));
+        chatAreaWidget->setStyleSheet(QCoreApplication::translate("ChatWindow", "QWidget#chatAreaWidget {\n"
+"    background-color: #FFFFFF;\n"
+"    border: 1px solid #7F9DB9;\n"
+"    border-left: none;\n"
+"}", nullptr));
         chatWithLabel->setText(QCoreApplication::translate("ChatWindow", "Chat with: None", nullptr));
         chatWithLabel->setStyleSheet(QCoreApplication::translate("ChatWindow", "font-size: 11px; font-weight: bold; color: #003B75; padding: 5px;", nullptr));
         chatDisplay->setPlaceholderText(QCoreApplication::translate("ChatWindow", "Select a user to start chatting...", nullptr));
         chatDisplay->setStyleSheet(QCoreApplication::translate("ChatWindow", "border: 1px solid #7F9DB9; padding: 5px; font-family: Tahoma, Arial, sans-serif; font-size: 12px;", nullptr));
         messageInput->setPlaceholderText(QCoreApplication::translate("ChatWindow", "Type your message...", nullptr));
         messageInput->setStyleSheet(QCoreApplication::translate("ChatWindow", "border: 1px solid #7F9DB9; padding: 2px 5px; font-family: Tahoma, Arial, sans-serif; font-size: 12px;", nullptr));
+        emojiButton->setText(QCoreApplication::translate("ChatWindow", "\342\230\272", nullptr));
+#if QT_CONFIG(tooltip)
+        emojiButton->setToolTip(QCoreApplication::translate("ChatWindow", "Insert emoticon", nullptr));
+#endif // QT_CONFIG(tooltip)
+        emojiButton->setStyleSheet(QCoreApplication::translate("ChatWindow", "QPushButton#emojiButton {\n"
+"    border: 1px solid #7F9DB9;\n"
+"    background-color: #E3EBF6;\n"
+"    font-size: 12px;\n"
+"    padding: 0;\n"
+"}\n"
+"QPushButton#emojiButton:hover {\n"
+"    background-color: #F5FAFF;\n"
+"}", nullptr));
         sendButton->setText(QCoreApplication::translate("ChatWindow", "Send", nullptr));
         sendButton->setStyleSheet(QCoreApplication::translate("ChatWindow", "font-weight: bold;", nullptr));
+        rightSideRail->setStyleSheet(QCoreApplication::translate("ChatWindow", "background: qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"    stop:0 #001899,\n"
+"    stop:0.05 #001FAA,\n"
+"    stop:0.20 #0028BB,\n"
+"    stop:0.50 #0036D3,\n"
+"    stop:0.75 #0044DD,\n"
+"    stop:0.88 #0055EE,\n"
+"    stop:0.94 #0066FF,\n"
+"    stop:0.97 #0D8FFF,\n"
+"    stop:1.0 #1AA7FF);", nullptr));
         statusLabel->setText(QCoreApplication::translate("ChatWindow", "Connected", nullptr));
         statusLabel->setStyleSheet(QCoreApplication::translate("ChatWindow", "font-size: 9px; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.7); padding: 8px;", nullptr));
     } // retranslateUi

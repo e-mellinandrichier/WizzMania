@@ -48,12 +48,13 @@ template <> constexpr inline auto LoginWindow::qt_create_metaobjectdata<qt_meta_
         "status",
         "serverUrl",
         "onLoginClicked",
-        "onRegisterClicked",
         "onRegisterSuccess",
         "onRegisterFailed",
         "error",
         "onLoginSuccess",
-        "onLoginFailed"
+        "onLoginFailed",
+        "onSignUpToggled",
+        "checked"
     };
 
     QtMocHelpers::UintData qt_methods {
@@ -64,21 +65,23 @@ template <> constexpr inline auto LoginWindow::qt_create_metaobjectdata<qt_meta_
         }}),
         // Slot 'onLoginClicked'
         QtMocHelpers::SlotData<void()>(8, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onRegisterClicked'
-        QtMocHelpers::SlotData<void()>(9, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onRegisterSuccess'
-        QtMocHelpers::SlotData<void()>(10, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(9, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onRegisterFailed'
-        QtMocHelpers::SlotData<void(const QString &)>(11, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::QString, 12 },
+        QtMocHelpers::SlotData<void(const QString &)>(10, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::QString, 11 },
         }}),
         // Slot 'onLoginSuccess'
-        QtMocHelpers::SlotData<void(const QString &, const QString &, const QString &, const QString &)>(13, 2, QMC::AccessPrivate, QMetaType::Void, {{
+        QtMocHelpers::SlotData<void(const QString &, const QString &, const QString &, const QString &)>(12, 2, QMC::AccessPrivate, QMetaType::Void, {{
             { QMetaType::QString, 3 }, { QMetaType::QString, 4 }, { QMetaType::QString, 5 }, { QMetaType::QString, 6 },
         }}),
         // Slot 'onLoginFailed'
-        QtMocHelpers::SlotData<void(const QString &)>(14, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::QString, 12 },
+        QtMocHelpers::SlotData<void(const QString &)>(13, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::QString, 11 },
+        }}),
+        // Slot 'onSignUpToggled'
+        QtMocHelpers::SlotData<void(bool)>(14, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::Bool, 15 },
         }}),
     };
     QtMocHelpers::UintData qt_properties {
@@ -105,11 +108,11 @@ void LoginWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         switch (_id) {
         case 0: _t->loginSuccessful((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[3])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[4])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[5]))); break;
         case 1: _t->onLoginClicked(); break;
-        case 2: _t->onRegisterClicked(); break;
-        case 3: _t->onRegisterSuccess(); break;
-        case 4: _t->onRegisterFailed((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1]))); break;
-        case 5: _t->onLoginSuccess((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[3])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[4]))); break;
-        case 6: _t->onLoginFailed((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1]))); break;
+        case 2: _t->onRegisterSuccess(); break;
+        case 3: _t->onRegisterFailed((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1]))); break;
+        case 4: _t->onLoginSuccess((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[3])),(*reinterpret_cast<std::add_pointer_t<QString>>(_a[4]))); break;
+        case 5: _t->onLoginFailed((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1]))); break;
+        case 6: _t->onSignUpToggled((*reinterpret_cast<std::add_pointer_t<bool>>(_a[1]))); break;
         default: ;
         }
     }
